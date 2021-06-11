@@ -87,7 +87,7 @@ public static class Dane
         {
             ManagerUI.managerUI.UstawGłośnośćDźwięku = poziomDźwięku;
             ManagerUI.managerUI.UstawGłośnośćMuzyki = poziomMuzyki;
-            ManagerUI.managerUI.UstawJęzyk((int)ustalonyJęzyk);
+            ManagerUI.managerUI.UstawJęzyk((byte)ustalonyJęzyk);
         }
     }
 }

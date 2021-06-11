@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class ManagerGry : MonoBehaviour
 {
     public static ManagerGry managerGry = null;
-
+    public TextAsset jezykiTekst;
     void Awake()
     {
         if (managerGry == null)
@@ -33,6 +33,7 @@ public class ManagerGry : MonoBehaviour
         switch (coWykonaćPo)
         {
             case 0: //Po załadowaniu Załaduj dane
+                yield return new WaitUntil(()=>ManagerUI.managerUI != null);
                 Dane.ŁadujDane(1);
                 break;
         }

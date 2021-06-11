@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ManagerUI : MonoBehaviour
+public class ManagerUI : UI_Menu_Abs
 {
     public static ManagerUI managerUI = null;
     public Slider sliderMuzyki;
@@ -50,10 +50,22 @@ public class ManagerUI : MonoBehaviour
             Destroy(this);
         }
     }
-    ///<summary>Metoda wywoływana podczas zmiany języka interfejsu.</summary>
-    ///<param name="jakiJęzyk">Indeks języka jaki ma zostać ustawiony (0 - Angielski, 1 - Polski, 2 - Rosyjski, 3 - Ukraiński)
-    public void UstawJęzyk(int jakiJęzyk)
+    protected override void Start()
     {
-
+        base.Start();
     }
+
+    // Update is called once per frame
+    protected override void Update()
+    {
+        base.Update();
+    }
+    /*
+    ///<summary>Metoda ustawia jezyk dla UI. Kolejne elementy rozdzielone ; a języki | (nazwaObjektu|Angielski|Polski|Rosyjski|Ukraiński;)</summary>
+    ///<param name="ustIdx">Indeks języka na który ma zostać ustawiony UI.</param>
+    public override void UstawJęzyk(byte ustIdx = 0)
+    {
+        base.UstawJęzyk(ustIdx);
+    }
+    */
 }
