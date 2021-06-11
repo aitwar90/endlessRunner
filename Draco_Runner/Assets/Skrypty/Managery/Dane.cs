@@ -78,6 +78,8 @@ public static class Dane
         }
         return 1;
     }
+    ///<summary>Metoda ustawia dane zapisane na dysku.</summary>
+    ///<param name="coZaładować">Parametr określający co ma zostać ładowane (0-Dane gry, 1-Dane opcji)</param>
     public static void ŁadujDane(byte coZaładować = 0)
     {
         WczytajDane(coZaładować);

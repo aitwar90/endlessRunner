@@ -24,6 +24,9 @@ public class ManagerGry : MonoBehaviour
         StartCoroutine(CzekajAżZaładujęScenę(0, 2));    //Ładuj dane opcji
         StartCoroutine(ŁadujSceny(2));
     }
+    ///<summary>Funkcja czeka, aż zostanie załadowana zadana scena.</summary>
+    ///<param name="scenaDoZaładowania">Indeks określający czynność jaka ma się wykonać po załadowani zadanej sceny.</param>
+    ///<param name="czyMainUI">Indeks sprawdzanej sceny.</param>
     private IEnumerator CzekajAżZaładujęScenę(byte coWykonaćPo, byte scenaDoZaładowania)
     {
         yield return new WaitUntil(() => SceneManager.GetSceneByBuildIndex(scenaDoZaładowania).isLoaded);
@@ -34,6 +37,9 @@ public class ManagerGry : MonoBehaviour
                 break;
         }
     }
+    ///<summary>Funkcja ładuje scenę zadaną w parametrze.</summary>
+    ///<param name="scenaDoZaładowania">Indeks sceny jaka ma zostać załadowana z Build Index.</param>
+    ///<param name="czyMainUI">Czy scena ma łądować MainUI (UI Gry).</param>
     private IEnumerator ŁadujSceny(byte scenaDoZaładowania, bool czyMainUI = false)
     {
         AsyncOperation asyncOperation;

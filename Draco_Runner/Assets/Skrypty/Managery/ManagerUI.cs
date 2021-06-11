@@ -39,10 +39,6 @@ public class ManagerUI : MonoBehaviour
             }
         }
     }
-    public void UstawJęzyk(int jakiJęzyk)
-    {
-
-    }
     void Awake()
     {
         if(managerUI == null)
@@ -53,5 +49,11 @@ public class ManagerUI : MonoBehaviour
         {
             Destroy(this);
         }
+    }
+    ///<summary>Metoda wywoływana podczas zmiany języka interfejsu.</summary>
+    ///<param name="jakiJęzyk">Indeks języka jaki ma zostać ustawiony (0 - Angielski, 1 - Polski, 2 - Rosyjski, 3 - Ukraiński)
+    public void UstawJęzyk(int jakiJęzyk)
+    {
+
     }
 }
