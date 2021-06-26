@@ -45,6 +45,14 @@ public class PoruszaniePostaci : MonoBehaviour
                 this.transform.Translate(Vector3.right);
             }
         }
+        if(Input.anyKey)
+        {
+            float y = Input.GetAxis("Vertical");
+            if(y != 0.0f)
+            {
+                this.transform.RotateAround(this.transform.position, Vector3.right, y*0.2f);
+            }
+        }
     }
     ///<summary>Kiedy postać ginie ma zostać wywołana ta metoda.</summary>
     public void GameOver()
