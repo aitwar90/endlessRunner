@@ -89,6 +89,10 @@ public static class Dane
             ManagerUI.managerUI.UstawGłośnośćMuzyki = poziomMuzyki;
             ManagerUI.managerUI.UstawJęzyk((byte)ustalonyJęzyk);
         }
+        else if(coZaładować == 2)   //Ładuj grę
+        {
+
+        }
     }
 }
 public enum Język

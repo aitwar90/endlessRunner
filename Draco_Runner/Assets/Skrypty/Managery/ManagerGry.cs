@@ -21,8 +21,25 @@ public class ManagerGry : MonoBehaviour
     void Start()
     {
         Dane.ŁadujDane(0);
-        StartCoroutine(CzekajAżZaładujęScenę(0, 2));    //Ładuj dane opcji
-        StartCoroutine(ŁadujSceny(2));
+        ZaładujScenęOIndeksie(2);
+    }
+    /**
+    <summary>
+    Metoda ładuje scene o zadanym indeksie.
+    </summary>
+    <param name="sceneIndex">Indeks sceny jaka ma zostać załadowana.</param>
+    */
+    public void ZaładujScenęOIndeksie(byte sceneIndex)
+    {
+        byte coWykonaćPo = 0;
+        bool czyMainUI = true;
+        if(sceneIndex > 3)
+        {
+            coWykonaćPo = 1;
+            czyMainUI = false;
+        }
+        StartCoroutine(CzekajAżZaładujęScenę(coWykonaćPo, sceneIndex));    //Ładuj dane opcji
+        StartCoroutine(ŁadujSceny(sceneIndex, czyMainUI));
     }
     ///<summary>Funkcja czeka, aż zostanie załadowana zadana scena.</summary>
     ///<param name="scenaDoZaładowania">Indeks określający czynność jaka ma się wykonać po załadowani zadanej sceny.</param>
@@ -36,6 +53,10 @@ public class ManagerGry : MonoBehaviour
                 yield return new WaitUntil(()=>ManagerUI.managerUI != null);
                 Dane.ŁadujDane(1);
                 break;
+            case 1:
+                yield return new WaitUntil(() => ManagerMainUI.managerMainUI != null);
+                Dane.ŁadujDane(2);
+                break;
         }
     }
     ///<summary>Funkcja ładuje scenę zadaną w parametrze.</summary>
@@ -43,11 +64,11 @@ public class ManagerGry : MonoBehaviour
     ///<param name="czyMainUI">Czy scena ma łądować MainUI (UI Gry).</param>
     private IEnumerator ŁadujSceny(byte scenaDoZaładowania, bool czyMainUI = false)
     {
-        AsyncOperation asyncOperation;
+        AsyncOperation asyncOperation = new AsyncOperation();
         //Deaktywuj wszystkie sceny z wyjątkiem Dane (sceny z build index 0)
-        for(byte i = 1; i < SceneManager.sceneCount; i++)
+        for(int i = 1; i < SceneManager.sceneCount; i++)
         {
-            asyncOperation = SceneManager.UnloadSceneAsync(i);
+            asyncOperation = SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(i));
             yield return new WaitUntil(()=> asyncOperation.isDone);
         }
         //Załaduj scenę Loading
@@ -59,8 +80,8 @@ public class ManagerGry : MonoBehaviour
         //Wyłącz scenę Loading
         asyncOperation = SceneManager.UnloadSceneAsync(1);
         //Załaduj scenę z UI
-        if(czyMainUI)
-        {   //Załaduj scenę MainMenu
+        if(!czyMainUI)
+        { 
             SceneManager.LoadSceneAsync(3, LoadSceneMode.Additive);
         }
     }

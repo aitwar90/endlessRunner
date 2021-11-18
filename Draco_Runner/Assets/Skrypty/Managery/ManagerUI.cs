@@ -8,7 +8,7 @@ public class ManagerUI : UI_Menu_Abs
     public static ManagerUI managerUI = null;
     public Slider sliderMuzyki;
     public Slider sliderDźwięku;
-
+    
     public float UstawGłośnośćMuzyki
     {
         get
@@ -59,6 +59,10 @@ public class ManagerUI : UI_Menu_Abs
     protected override void Update()
     {
         base.Update();
+    }
+    public void OdpalGrę()
+    {
+        ManagerGry.managerGry.ZaładujScenęOIndeksie(4); //Poziomy gry 4+
     }
     /*
     ///<summary>Metoda ustawia jezyk dla UI. Kolejne elementy rozdzielone ; a języki | (nazwaObjektu|Angielski|Polski|Rosyjski|Ukraiński;)</summary>
