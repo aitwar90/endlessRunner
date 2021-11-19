@@ -5,11 +5,19 @@ using UnityEngine;
 public class PoruszaniePostaci : MonoBehaviour
 {
     public static PoruszaniePostaci poruszaniePostaci = null;
-    private byte tor = 1;
-    public float offsetToru = 1.0f;
+    public float aktualnyMnożnikPrędkości = 0.005f;
+    public float docelowyMnożnikPrędkości = 1.0f;
+    public float aktualnaMocSkrętu = 1.0f;
+    public float docelowaMocSkrętu = 1.0f;
+
+    public float odchylenieOśZ = 0.0f;
+    public float odchylenieOsiX = 0.0f;
+    public Vector3 przesunięcie = Vector3.zero;
+    public Vector3 obrót = Vector3.zero;
+    public bool postaćBok = false;
     void Awake()
     {
-        if(poruszaniePostaci == null)
+        if (poruszaniePostaci == null)
         {
             poruszaniePostaci = this;
         }
@@ -18,45 +26,145 @@ public class PoruszaniePostaci : MonoBehaviour
             Destroy(this);
         }
     }
-    
+
     void Start()
     {
-        
+
     }
 
     void Update()
     {
-        ObsłużInput();
+        ObsłużObrót();
+        ObsłużLogikęLotu();
+        ZaktualizujTransform();
     }
     ///<summary>Obsługa strumieni wejścia z klawiszy.</summary>
-    private void ObsłużInput()
+    private void ObsłużObrót()
     {
-        if(Input.anyKeyDown)
+        Vector3 temp = Vector3.zero;
+        if (Input.anyKey)
         {
-            float x = Input.GetAxisRaw("Horizontal");
-            if(x < 0 && tor > 0)
-            {
-                tor--;
-                this.transform.Translate(-Vector3.right);
-            }
-            else if(tor < 2 && x > 0)
-            {
-                tor++;
-                this.transform.Translate(Vector3.right);
-            }
-        }
-        if(Input.anyKey)
-        {
+            float mocSkrętu = aktualnaMocSkrętu * Time.deltaTime;
+            float x = Input.GetAxis("Horizontal");
             float y = Input.GetAxis("Vertical");
-            if(y != 0.0f)
+            if(Mathf.Abs(x) > 0.05f)
             {
-                this.transform.RotateAround(this.transform.position, Vector3.right, y*0.2f);
+                temp.y += x * mocSkrętu;
+                //Debug.Log("Modyfikuje skręt");
+            }
+            if(Mathf.Abs(y) > 0.05f)
+            {
+                temp.x += y * mocSkrętu;
+                //Debug.Log("Modyfikuje pochył");
+            }
+            if (temp.x != 0)
+            {
+                postaćBok = true;
             }
         }
+        obrót = temp;
+    }
+    /**
+    <summary>
+    Metoda obsługuję logikę lotu.
+    </summary>
+    */
+    private void ObsłużLogikęLotu()
+    {
+        bool zwiekszSpadanie = false;
+        WyrównujLot();
+        if (Mathf.Abs(odchylenieOśZ) > 45.0f)
+        {
+            zwiekszSpadanie = true;
+        }
+        przesunięcie = this.transform.forward * aktualnyMnożnikPrędkości * Time.deltaTime;
+        if(zwiekszSpadanie)
+        {
+            przesunięcie.y -= (odchylenieOśZ/1000.0f) * Time.deltaTime;
+        }
+    }
+    /**
+    <summary>
+    Metoda ma za zadanie wyrównać lot jednostki.
+    </summary>
+    */
+    private void WyrównujLot()
+    {
+        if (!postaćBok)  //Gracz nie trzyma strzałki
+        {
+            if (odchylenieOśZ < 0.1f)
+            {
+                obrót.z += Time.deltaTime*10f;
+            }
+            else if(odchylenieOśZ > 0.1f)
+            {
+                obrót.z -= Time.deltaTime*10f;;
+            }
+            else
+            {
+                obrót.z = -odchylenieOśZ;
+            }
+            if (odchylenieOsiX < 0.1f)
+            {
+                obrót.x += Time.deltaTime*10f;
+            }
+            else if(odchylenieOsiX > 0.1f)
+            {
+                obrót.x -= Time.deltaTime*10f;
+            }
+            else
+            {
+                obrót.x = -odchylenieOsiX;
+            }
+        }
+    }
+    /**
+    <summary>
+    Metoda aktualizuje pozycję i rotację obiektu gracza.
+    </summary>
+    */
+    private void ZaktualizujTransform()
+    {
+        this.transform.Translate(przesunięcie, Space.World);
+        this.transform.Rotate(obrót, Space.Self);
+        Quaternion quat = this.transform.rotation;
+        odchylenieOśZ = NaprawRotację(quat.eulerAngles.z);
+        odchylenieOsiX = NaprawRotację(quat.eulerAngles.x);
+        postaćBok = false;
+    }
+    /**
+    <summary>
+    Funkcja zmienia docelowy mnożnik prędkości dla postaci o wartość podaną w parametrze i zwraca nową wartość zmiennej docelowyMnożnikPrędkości.
+    </summary>
+    <param name="delta">Wartość o jaką zostanie zmieniony docelowy mnożnik prędkosci postaci.</param>
+    */
+    public float ZmieńMnośnikPrędkości(float delta)
+    {
+        docelowyMnożnikPrędkości += delta;
+        return docelowyMnożnikPrędkości;
     }
     ///<summary>Kiedy postać ginie ma zostać wywołana ta metoda.</summary>
     public void GameOver()
     {
         //Wyświetl Canvas po śmierci (Obejrzenie reklamy ma wskrzeszać gracza)
+    }
+    /**
+    <summary>
+    Funkcja zwraca naprawioną wartość rotacji.
+    </summary>
+    */
+    private float NaprawRotację(float rotacjaDoNaprawy)
+    {
+        if(rotacjaDoNaprawy > 180.0f)
+        {
+            rotacjaDoNaprawy = -360.0f + rotacjaDoNaprawy;
+        }
+        else if(rotacjaDoNaprawy < -180.0f)
+        {
+            rotacjaDoNaprawy = 360.0f - rotacjaDoNaprawy;
+        }
+        if(Mathf.Abs(rotacjaDoNaprawy) < 0.05f)
+            rotacjaDoNaprawy = 0.0f;
+        return rotacjaDoNaprawy;
     }
 }
