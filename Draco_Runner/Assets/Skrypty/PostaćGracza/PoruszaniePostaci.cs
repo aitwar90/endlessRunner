@@ -6,15 +6,15 @@ public class PoruszaniePostaci : MonoBehaviour
 {
     public static PoruszaniePostaci poruszaniePostaci = null;
     public float aktualnyMnożnikPrędkości = 0.005f;
-    public float docelowyMnożnikPrędkości = 1.0f;
+    private float docelowyMnożnikPrędkości = 1.0f;
     public float aktualnaMocSkrętu = 1.0f;
-    public float docelowaMocSkrętu = 1.0f;
+    private float docelowaMocSkrętu = 1.0f;
 
-    public float odchylenieOśZ = 0.0f;
-    public float odchylenieOsiX = 0.0f;
-    public Vector3 przesunięcie = Vector3.zero;
-    public Vector3 obrót = Vector3.zero;
-    public bool postaćBok = false;
+    private float odchylenieOśZ = 0.0f;
+    private float odchylenieOsiX = 0.0f;
+    private Vector3 przesunięcie = Vector3.zero;
+    private Vector3 obrót = Vector3.zero;
+    private bool postaćBok = false;
     void Awake()
     {
         if (poruszaniePostaci == null)
