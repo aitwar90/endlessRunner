@@ -347,15 +347,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b76e798acc4c8124183ed875b7acbce9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  "aktualnyMno\u017CnikPr\u0119dko\u015Bci": 0.5
-  "docelowyMno\u017CnikPr\u0119dko\u015Bci": 1
+  "aktualnyMno\u017CnikPr\u0119dko\u015Bci": 15
   "aktualnaMocSkr\u0119tu": 50
-  "docelowaMocSkr\u0119tu": 1
-  "odchylenieO\u015BZ": 0
-  odchylenieOsiX: 0
-  "przesuni\u0119cie": {x: 0, y: 0, z: 0}
-  "obr\xF3t": {x: 0, y: 0, z: 0}
-  "posta\u0107Bok": 0
 --- !u!65 &372060879
 BoxCollider:
   m_ObjectHideFlags: 0

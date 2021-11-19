@@ -41,18 +41,19 @@ public class PoruszaniePostaci : MonoBehaviour
     ///<summary>Obsługa strumieni wejścia z klawiszy.</summary>
     private void ObsłużObrót()
     {
-        Vector3 temp = Vector3.zero;
         if (Input.anyKey)
         {
+            Vector3 temp = Vector3.zero;
             float mocSkrętu = aktualnaMocSkrętu * Time.deltaTime;
             float x = Input.GetAxis("Horizontal");
             float y = Input.GetAxis("Vertical");
-            if(Mathf.Abs(x) > 0.05f)
+            if (Mathf.Abs(x) > 0.05f)
             {
                 temp.y += x * mocSkrętu;
+                temp.z -= temp.y * 2.0f;
                 //Debug.Log("Modyfikuje skręt");
             }
-            if(Mathf.Abs(y) > 0.05f)
+            if (Mathf.Abs(y) > 0.05f)
             {
                 temp.x += y * mocSkrętu;
                 //Debug.Log("Modyfikuje pochył");
@@ -61,8 +62,12 @@ public class PoruszaniePostaci : MonoBehaviour
             {
                 postaćBok = true;
             }
+            obrót = temp;
         }
-        obrót = temp;
+        else
+        {
+            obrót = Vector3.zero;
+        }
     }
     /**
     <summary>
@@ -78,9 +83,9 @@ public class PoruszaniePostaci : MonoBehaviour
             zwiekszSpadanie = true;
         }
         przesunięcie = this.transform.forward * aktualnyMnożnikPrędkości * Time.deltaTime;
-        if(zwiekszSpadanie)
+        if (zwiekszSpadanie)
         {
-            przesunięcie.y -= (odchylenieOśZ/1000.0f) * Time.deltaTime;
+            przesunięcie.y -= (odchylenieOśZ / 1000.0f) * Time.deltaTime;
         }
     }
     /**
@@ -94,11 +99,11 @@ public class PoruszaniePostaci : MonoBehaviour
         {
             if (odchylenieOśZ < 0.1f)
             {
-                obrót.z += Time.deltaTime*10f;
+                obrót.z += Time.deltaTime * PrzemnożPrzezFunkcję(odchylenieOśZ);
             }
-            else if(odchylenieOśZ > 0.1f)
+            else if (odchylenieOśZ > 0.1f)
             {
-                obrót.z -= Time.deltaTime*10f;;
+                obrót.z -= Time.deltaTime * PrzemnożPrzezFunkcję(odchylenieOśZ);
             }
             else
             {
@@ -106,11 +111,11 @@ public class PoruszaniePostaci : MonoBehaviour
             }
             if (odchylenieOsiX < 0.1f)
             {
-                obrót.x += Time.deltaTime*10f;
+                obrót.x += Time.deltaTime * PrzemnożPrzezFunkcję(odchylenieOsiX/2.0f);
             }
-            else if(odchylenieOsiX > 0.1f)
+            else if (odchylenieOsiX > 0.1f)
             {
-                obrót.x -= Time.deltaTime*10f;
+                obrót.x -= Time.deltaTime * PrzemnożPrzezFunkcję(odchylenieOsiX/2.0f);
             }
             else
             {
@@ -138,10 +143,21 @@ public class PoruszaniePostaci : MonoBehaviour
     </summary>
     <param name="delta">Wartość o jaką zostanie zmieniony docelowy mnożnik prędkosci postaci.</param>
     */
-    public float ZmieńMnośnikPrędkości(float delta)
+    public float ZmieńMnożnikPrędkości(float delta)
     {
         docelowyMnożnikPrędkości += delta;
         return docelowyMnożnikPrędkości;
+    }
+    /**
+    <summary>
+    Funkcja zmienia docelowy mnożnik skrętu dla postaci o wartość podaną w parametrze i zwraca nową wartość zmiennej docelowyMnożnikSkrętu.
+    </summary>
+    <param name="delta">Wartość o jaką zostanie zmieniony docelowy mnożnik skrętu postaci.</param>
+    */
+    public float ZmieńMnożnikSkrętu(float delta)
+    {
+        docelowaMocSkrętu += delta;
+        return docelowaMocSkrętu;
     }
     ///<summary>Kiedy postać ginie ma zostać wywołana ta metoda.</summary>
     public void GameOver()
@@ -155,16 +171,43 @@ public class PoruszaniePostaci : MonoBehaviour
     */
     private float NaprawRotację(float rotacjaDoNaprawy)
     {
-        if(rotacjaDoNaprawy > 180.0f)
+        if (rotacjaDoNaprawy > 180.0f)
         {
             rotacjaDoNaprawy = -360.0f + rotacjaDoNaprawy;
         }
-        else if(rotacjaDoNaprawy < -180.0f)
+        else if (rotacjaDoNaprawy < -180.0f)
         {
             rotacjaDoNaprawy = 360.0f - rotacjaDoNaprawy;
         }
-        if(Mathf.Abs(rotacjaDoNaprawy) < 0.05f)
+        if (Mathf.Abs(rotacjaDoNaprawy) < 0.05f)
             rotacjaDoNaprawy = 0.0f;
         return rotacjaDoNaprawy;
+    }
+    private float PrzemnożPrzezFunkcję(float x)
+    {
+        //if(x < 35f && x > -35f)
+        //{
+        x /= 2.0f;
+        x*=x;
+        if(x > 175f)
+            x = 175f;
+        return x;
+        //}
+        //else
+        //{
+        //    return x / 3.0f;
+        //}
+        /*
+        if (x > 30f)
+        {
+            x = 2 / x;
+
+        }
+        else
+        {
+            x = x/(2*x);
+        }
+        return x;
+        */
     }
 }
