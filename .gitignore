@@ -62,3 +62,6 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+My project/Packages/manifest.json
+My project/ProjectSettings/ProjectSettings.asset
+My project/Packages/packages-lock.json
