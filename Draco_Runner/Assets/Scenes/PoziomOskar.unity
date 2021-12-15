@@ -200,7 +200,6 @@ GameObject:
   - component: {fileID: 520182893}
   - component: {fileID: 520182896}
   - component: {fileID: 520182895}
-  - component: {fileID: 520182894}
   m_Layer: 0
   m_Name: dolna_chmura
   m_TagString: Untagged
@@ -222,20 +221,6 @@ Transform:
   m_Father: {fileID: 618416718}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &520182894
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 520182892}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!23 &520182895
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -455,8 +440,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 731340392}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -85, y: 767.3, z: 0}
-  m_LocalScale: {x: 82.8, y: 100, z: 100}
+  m_LocalPosition: {x: -95.2, y: 786.8, z: 0}
+  m_LocalScale: {x: 77.60017, y: 80.07, z: 100}
   m_Children: []
   m_Father: {fileID: 1608312972}
   m_RootOrder: 0
@@ -535,7 +520,6 @@ GameObject:
   - component: {fileID: 959324684}
   - component: {fileID: 959324687}
   - component: {fileID: 959324686}
-  - component: {fileID: 959324685}
   m_Layer: 0
   m_Name: dolna_chmura (1)
   m_TagString: Untagged
@@ -557,20 +541,6 @@ Transform:
   m_Father: {fileID: 618416718}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &959324685
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 959324683}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!23 &959324686
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -791,11 +761,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 429004, guid: e5a9e0b66bb8a8b47a28819231a34fc2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 163.3
+      value: -140
       objectReference: {fileID: 0}
     - target: {fileID: 429004, guid: e5a9e0b66bb8a8b47a28819231a34fc2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1161
+      value: 1187
       objectReference: {fileID: 0}
     - target: {fileID: 429004, guid: e5a9e0b66bb8a8b47a28819231a34fc2, type: 3}
       propertyPath: m_LocalPosition.z
@@ -828,6 +798,14 @@ PrefabInstance:
     - target: {fileID: 429004, guid: e5a9e0b66bb8a8b47a28819231a34fc2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 465492, guid: e5a9e0b66bb8a8b47a28819231a34fc2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 255.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 465492, guid: e5a9e0b66bb8a8b47a28819231a34fc2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 14.3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5a9e0b66bb8a8b47a28819231a34fc2, type: 3}
