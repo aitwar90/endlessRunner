@@ -10,10 +10,11 @@ public class BłyskawicaSkrypt : VisualBase
         temp = temp.normalized;
         temp *= UnityEngine.Random.Range(0.75f, 1.25f);
         byte count = 0;
+        NodeBłyskawica nBłyskawica = null;
         if(błyskawiceRoot == null)
         {
             błyskawiceRoot = new NodeBłyskawica[1];
-            NodeBłyskawica nBłyskawica = new NodeBłyskawica(root.x, root.y, root.z, temp.x, temp.y, temp.z);
+            nBłyskawica = new NodeBłyskawica(root.x, root.y, root.z, temp.x, temp.y, temp.z);
             błyskawiceRoot[0] = nBłyskawica;
             HelperGenerujBłyskawicę(ref błyskawiceRoot[0], temp.x, temp.y, temp.z, count);
             return;
@@ -25,7 +26,7 @@ public class BłyskawicaSkrypt : VisualBase
                 if(!błyskawiceRoot[i].actualUse)
                 {
                     //Użyj tej błyskawicy
-                    NodeBłyskawica nBłyskawica = new NodeBłyskawica(root.x, root.y, root.z, temp.x, temp.y, temp.z);
+                    nBłyskawica = new NodeBłyskawica(root.x, root.y, root.z, temp.x, temp.y, temp.z);
                     błyskawiceRoot[i] = nBłyskawica;
                     HelperZaktualizujBłyskawicę(ref błyskawiceRoot[i], temp.x, temp.y, temp.z);
                     return;
@@ -38,13 +39,17 @@ public class BłyskawicaSkrypt : VisualBase
                 nBłys[i] = błyskawiceRoot[i];
             }
             błyskawiceRoot = nBłys;
-            NodeBłyskawica nBłyskawica = new NodeBłyskawica(root.x, root.y, root.z, temp.x, temp.y, temp.z);
+            nBłyskawica = new NodeBłyskawica(root.x, root.y, root.z, temp.x, temp.y, temp.z);
             błyskawiceRoot[błyskawiceRoot.Length-1] = nBłyskawica;
             HelperGenerujBłyskawicę(ref błyskawiceRoot[błyskawiceRoot.Length-1], temp.x, temp.y, temp.z, count);
         }
     }
     private void HelperGenerujBłyskawicę(ref NodeBłyskawica root, float dirx, float diry, float dirz, byte cout)
     {
+        while(cout <= 15)
+        {
+            break;
+        }
     }
     private void HelperZaktualizujBłyskawicę(ref NodeBłyskawica root, float dirx, float diry, float dirz)
     {
