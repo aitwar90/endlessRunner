@@ -8,22 +8,26 @@ public class BłyskawicaSkrypt : VisualBase
     {
         Vector3 temp = targetPosition - root;
         temp = temp.normalized;
-        temp *= UnityEngine.Random.Range(0.75f, 1.25f);
+        if(temp.x == 0.0) temp.x = Random.Range(-0.1f, 0.11f);
+        if(temp.y == 0.0) temp.y = Random.Range(-0.1f, 0.11f);
+        if(temp.z == 0.0) temp.z = Random.Range(-0.1f, 0.11f);
+        temp *= UnityEngine.Random.Range(0.85f, 1.45f);
+        Debug.Log("tmp = "+temp);
         byte count = 0;
         NodeBłyskawica nBłyskawica = null;
-        if(błyskawiceRoot == null)
+        if (błyskawiceRoot == null)
         {
             błyskawiceRoot = new NodeBłyskawica[1];
             nBłyskawica = new NodeBłyskawica(root.x, root.y, root.z, temp.x, temp.y, temp.z);
             błyskawiceRoot[0] = nBłyskawica;
-            HelperGenerujBłyskawicę(ref błyskawiceRoot[0], temp.x, temp.y, temp.z, count);
+            HelperGenerujBłyskawicę(błyskawiceRoot[0], temp.x, temp.y, temp.z, count);
             return;
         }
         else
         {
-            for(byte i = 0; i < błyskawiceRoot.Length; i++)
+            for (byte i = 0; i < błyskawiceRoot.Length; i++)
             {
-                if(!błyskawiceRoot[i].actualUse)
+                if (!błyskawiceRoot[i].actualUse)
                 {
                     //Użyj tej błyskawicy
                     nBłyskawica = new NodeBłyskawica(root.x, root.y, root.z, temp.x, temp.y, temp.z);
@@ -33,22 +37,32 @@ public class BłyskawicaSkrypt : VisualBase
                 }
             }
             //Stwórz nową błyskawicę
-            NodeBłyskawica[] nBłys = new NodeBłyskawica[błyskawiceRoot.Length+1];
-            for(byte i = 0; i < błyskawiceRoot.Length; i++)
+            NodeBłyskawica[] nBłys = new NodeBłyskawica[błyskawiceRoot.Length + 1];
+            for (byte i = 0; i < błyskawiceRoot.Length; i++)
             {
                 nBłys[i] = błyskawiceRoot[i];
             }
             błyskawiceRoot = nBłys;
             nBłyskawica = new NodeBłyskawica(root.x, root.y, root.z, temp.x, temp.y, temp.z);
-            błyskawiceRoot[błyskawiceRoot.Length-1] = nBłyskawica;
-            HelperGenerujBłyskawicę(ref błyskawiceRoot[błyskawiceRoot.Length-1], temp.x, temp.y, temp.z, count);
+            błyskawiceRoot[błyskawiceRoot.Length - 1] = nBłyskawica;
+            HelperGenerujBłyskawicę(błyskawiceRoot[błyskawiceRoot.Length - 1], temp.x, temp.y, temp.z, count);
         }
     }
-    private void HelperGenerujBłyskawicę(ref NodeBłyskawica root, float dirx, float diry, float dirz, byte cout)
+    private void HelperGenerujBłyskawicę(NodeBłyskawica aktSprawdzany, float dirx, float diry, float dirz, byte cout)
     {
-        while(cout <= 15)
+        if (cout >= 26)
         {
-            break;
+            return;
+        }
+        byte liczbaOdnóg = (byte)Random.Range((cout < 20) ? 1 : 0, (cout < 20) ? Random.Range(1, 4) : (cout > 24) ? 1 : 3);
+        for (byte i = 0; i < liczbaOdnóg; i++)
+        {
+            aktSprawdzany.DodajOdnogę(dirx, diry, dirz, (i == 0) ? true : false);
+        }
+        cout++;
+        for (byte i = 0; i < liczbaOdnóg; i++)
+        {
+            HelperGenerujBłyskawicę(aktSprawdzany.odnogiBłyskawicy[i], dirx, diry, dirz, cout);
         }
     }
     private void HelperZaktualizujBłyskawicę(ref NodeBłyskawica root, float dirx, float diry, float dirz)
@@ -83,8 +97,8 @@ public class NodeBłyskawica
         }
         else
         {
-            NodeBłyskawica[] nodeBłyskawicas2 = new NodeBłyskawica[odnogiBłyskawicy.Length+1];
-            for(byte i = 0; i < odnogiBłyskawicy.Length; i++)
+            NodeBłyskawica[] nodeBłyskawicas2 = new NodeBłyskawica[odnogiBłyskawicy.Length + 1];
+            for (byte i = 0; i < odnogiBłyskawicy.Length; i++)
             {
                 nodeBłyskawicas2[i] = odnogiBłyskawicy[i];
             }
@@ -96,12 +110,12 @@ public class NodeBłyskawica
     ///<param name="x">Kierunek osi X.</param>
     ///<param name="y">Kierunek osi Y.</param>
     ///<param name="z">Kierunek osi Z.</param>
-    public void DodajOdnogę(float x, float y, float z)
+    public void DodajOdnogę(float x, float y, float z, bool first = true)
     {
-        float nx = x + UnityEngine.Random.Range(-0.25f*x, 0.25f*x) + ePos.x;
-        float ny = y + UnityEngine.Random.Range(-0.15f*y, 0.15f*y) + ePos.y;
-        float nz = z + UnityEngine.Random.Range(-0.25f*z, 0.25f*z) + ePos.z;
-        NodeBłyskawica nBłyskawica = new NodeBłyskawica(nx, ny, nz, x, y, z);
+        float nx = x + UnityEngine.Random.Range(((first) ? -1.45f : -3.40f) * x, ((first) ? 1.45f : 3.40f) * x);
+        float ny = y + UnityEngine.Random.Range(-0.45f * y, 0.45f * y);
+        float nz = z + UnityEngine.Random.Range(((first) ? -0.55f : 2.40f) * z, ((first) ? 0.55f : 2.40f) * z);
+        NodeBłyskawica nBłyskawica = new NodeBłyskawica(ePos.x, ePos.y, ePos.z, nx, ny, nz);
         DodajOdnogę(ref nBłyskawica);
     }
     ///<summary>Metoda tworzy odnogę biorąc pod uwagę kierunek podany w parametrach.</summary>
@@ -110,8 +124,9 @@ public class NodeBłyskawica
     ///<param name="z">Kierunek osi Z.</param>
     private void DodajEndPos(float x, float y, float z)
     {
-        ePos.x = x + UnityEngine.Random.Range(-0.15f*x, 0.15f*x) + sPos.x;
-        ePos.y = y + UnityEngine.Random.Range(-0.15f*y, 0.15f*y) + sPos.y;
-        ePos.z = z + UnityEngine.Random.Range(-0.15f*z, 0.15f*z) + sPos.z;
+        //float randomD = Random.Range(0.95f, 1.1f);
+        ePos.x = (x + UnityEngine.Random.Range(-0.35f * x, 0.35f * x) + sPos.x);// * randomD;
+        ePos.y = (y + UnityEngine.Random.Range(-0.25f * y, 0.25f * y) + sPos.y);// * randomD;
+        ePos.z = (z + UnityEngine.Random.Range(-0.35f * z, 0.35f * z) + sPos.z);// * randomD;
     }
 }
