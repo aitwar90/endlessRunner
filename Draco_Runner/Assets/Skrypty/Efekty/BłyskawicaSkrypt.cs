@@ -12,7 +12,6 @@ public class BłyskawicaSkrypt : VisualBase
         if(temp.y == 0.0) temp.y = Random.Range(-0.1f, 0.11f);
         if(temp.z == 0.0) temp.z = Random.Range(-0.1f, 0.11f);
         temp *= UnityEngine.Random.Range(0.85f, 1.45f);
-        Debug.Log("tmp = "+temp);
         byte count = 0;
         NodeBłyskawica nBłyskawica = null;
         if (błyskawiceRoot == null)
@@ -21,6 +20,7 @@ public class BłyskawicaSkrypt : VisualBase
             nBłyskawica = new NodeBłyskawica(root.x, root.y, root.z, temp.x, temp.y, temp.z);
             błyskawiceRoot[0] = nBłyskawica;
             HelperGenerujBłyskawicę(błyskawiceRoot[0], temp.x, temp.y, temp.z, count);
+            ManagerEfekty.instance.StartCorouiteStorms(0);
             return;
         }
         else
@@ -30,9 +30,9 @@ public class BłyskawicaSkrypt : VisualBase
                 if (!błyskawiceRoot[i].actualUse)
                 {
                     //Użyj tej błyskawicy
-                    nBłyskawica = new NodeBłyskawica(root.x, root.y, root.z, temp.x, temp.y, temp.z);
-                    błyskawiceRoot[i] = nBłyskawica;
-                    HelperZaktualizujBłyskawicę(ref błyskawiceRoot[i], temp.x, temp.y, temp.z);
+                    nBłyskawica = błyskawiceRoot[i];
+                    HelperZaktualizujBłyskawicę(nBłyskawica, temp.x, temp.y, temp.z, root.x, root.y, root.z);
+                    ManagerEfekty.instance.StartCorouiteStorms(i);
                     return;
                 }
             }
@@ -46,6 +46,7 @@ public class BłyskawicaSkrypt : VisualBase
             nBłyskawica = new NodeBłyskawica(root.x, root.y, root.z, temp.x, temp.y, temp.z);
             błyskawiceRoot[błyskawiceRoot.Length - 1] = nBłyskawica;
             HelperGenerujBłyskawicę(błyskawiceRoot[błyskawiceRoot.Length - 1], temp.x, temp.y, temp.z, count);
+            ManagerEfekty.instance.StartCorouiteStorms((byte)(błyskawiceRoot.Length - 1));
         }
     }
     private void HelperGenerujBłyskawicę(NodeBłyskawica aktSprawdzany, float dirx, float diry, float dirz, byte cout)
@@ -65,16 +66,26 @@ public class BłyskawicaSkrypt : VisualBase
             HelperGenerujBłyskawicę(aktSprawdzany.odnogiBłyskawicy[i], dirx, diry, dirz, cout);
         }
     }
-    private void HelperZaktualizujBłyskawicę(ref NodeBłyskawica root, float dirx, float diry, float dirz)
+    private void HelperZaktualizujBłyskawicę(NodeBłyskawica root, float dirx, float diry, float dirz, float prevEndX, float prevEndY, float prevEndZ)
     {
-
+        if(root == null) return;
+        root.AktualizujNode(prevEndX, prevEndY, prevEndZ, dirx, diry, dirz);
+        if(root.odnogiBłyskawicy == null || root.odnogiBłyskawicy.Length == 0)
+        {
+            return;
+        }
+        for(byte i = 0; i < root.odnogiBłyskawicy.Length; i++)
+        {
+            HelperZaktualizujBłyskawicę(root.odnogiBłyskawicy[i], dirx, diry, dirz, root.ePos.x, root.ePos.y, root.ePos.z);
+        }
     }
 }
+[System.Serializable]
 public class NodeBłyskawica
 {
     public Vector3 sPos;
     public Vector3 ePos;
-    public NodeBłyskawica[] odnogiBłyskawicy = null;
+    [SerializeField]public NodeBłyskawica[] odnogiBłyskawicy = null;
     public bool actualUse = false;
     public NodeBłyskawica()
     {
@@ -85,7 +96,7 @@ public class NodeBłyskawica
         sPos.x = sPosX;
         sPos.y = sPosY;
         sPos.z = sPosZ;
-        actualUse = true;
+        //actualUse = true;
         DodajEndPos(baseDirX, baseDirY, baseDirZ);
     }
     private void DodajOdnogę(ref NodeBłyskawica _nodeBłyskawica)
@@ -105,6 +116,13 @@ public class NodeBłyskawica
             nodeBłyskawicas2[odnogiBłyskawicy.Length] = _nodeBłyskawica;
             odnogiBłyskawicy = nodeBłyskawicas2;
         }
+    }
+    public void AktualizujNode(float x, float y, float z, float dirx, float diry, float dirz)
+    {
+        sPos.x = x;
+        sPos.y = y;
+        sPos.z = z;
+        DodajEndPos(dirx, diry, dirz);
     }
     ///<summary>Metoda tworzy odnogę biorąc pod uwagę kierunek podany w parametrach.</summary>
     ///<param name="x">Kierunek osi X.</param>

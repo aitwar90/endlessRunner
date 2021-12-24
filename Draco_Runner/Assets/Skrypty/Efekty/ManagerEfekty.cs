@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class ManagerEfekty : MonoBehaviour
 {
-    public static BłyskawicaSkrypt bScript = null;
+    public static ManagerEfekty instance = null;
+    public BłyskawicaSkrypt bScript = null;
     public Vector3 posStart;
     private bool wygenerowane = true;
     public Vector3 posPlayer;
     private byte idx = 0;
     void Awake()
     {
+        if(instance == null) instance = this;
+        else Destroy(this);
         bScript = new BłyskawicaSkrypt();
     }
     // Start is called before the first frame update
@@ -25,6 +28,25 @@ public class ManagerEfekty : MonoBehaviour
         
     }
     #region Visualize effects
+    public void StartCorouiteStorms(byte idx)
+    {
+        StartCoroutine(ObsługaBłyskawiy(idx, 1.25f, 10.75f));
+    }
+    private IEnumerator ObsługaBłyskawiy(byte idx, float fTime, float sTime)
+    {
+        yield return new WaitForSeconds(fTime);
+        ActivateMe(idx);
+        yield return new WaitForSeconds(sTime);
+        DesactivateMe(idx);
+    }
+    private void ActivateMe(byte idx)
+    {
+        bScript.błyskawiceRoot[idx].actualUse = true;
+    }
+    private void DesactivateMe(byte idx)
+    {
+        bScript.błyskawiceRoot[idx].actualUse = false;
+    }
     void OnDrawGizmos()
     {
         if(bScript != null)
@@ -64,6 +86,23 @@ public class ManagerEfekty : MonoBehaviour
         for(byte i = 0; i < aksCheckNode.odnogiBłyskawicy.Length; i++)
         {
             HelperShowBłyskawicę(aksCheckNode.odnogiBłyskawicy[i]);
+        }
+    }
+    public void GenerateAnotherOne()
+    {
+        posStart = posStart + Vector3.right;
+        posPlayer = posPlayer + Vector3.right;
+        if(bScript == null) bScript = new BłyskawicaSkrypt();
+        bScript.GenerujBłyskawicę(posStart, posPlayer);
+    }
+    public void KasujBłyskawice()
+    {
+        posStart = new Vector3(6.5f, 2.0f, 60f);
+        posPlayer = new Vector3(6.6f, 3.0f, 61f);
+        if(bScript != null)
+        {
+            bScript.błyskawiceRoot = null;
+            bScript = null;
         }
     }
     #endregion

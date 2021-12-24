@@ -4,6 +4,5 @@ using UnityEngine;
 
 public abstract class VisualBase
 {
-
-    public NodeBłyskawica[] błyskawiceRoot;
+    [SerializeField]public NodeBłyskawica[] błyskawiceRoot;
 }
