@@ -8,9 +8,9 @@ public class BłyskawicaSkrypt : VisualBase
     {
         Vector3 temp = targetPosition - root;
         temp = temp.normalized;
-        if(temp.x == 0.0) temp.x = Random.Range(-0.1f, 0.11f);
-        if(temp.y == 0.0) temp.y = Random.Range(-0.1f, 0.11f);
-        if(temp.z == 0.0) temp.z = Random.Range(-0.1f, 0.11f);
+        if (temp.x == 0.0) temp.x = Random.Range(-0.1f, 0.11f);
+        if (temp.y == 0.0) temp.y = Random.Range(-0.1f, 0.11f);
+        if (temp.z == 0.0) temp.z = Random.Range(-0.1f, 0.11f);
         temp *= UnityEngine.Random.Range(0.85f, 1.45f);
         byte count = 0;
         NodeBłyskawica nBłyskawica = null;
@@ -66,17 +66,17 @@ public class BłyskawicaSkrypt : VisualBase
             HelperGenerujBłyskawicę(aktSprawdzany.odnogiBłyskawicy[i], dirx, diry, dirz, cout);
         }
     }
-    private void HelperZaktualizujBłyskawicę(NodeBłyskawica root, float dirx, float diry, float dirz, float prevEndX, float prevEndY, float prevEndZ)
+    private void HelperZaktualizujBłyskawicę(NodeBłyskawica root, float dirx, float diry, float dirz, float prevEndX, float prevEndY, float prevEndZ, bool first = true)
     {
-        if(root == null) return;
-        root.AktualizujNode(prevEndX, prevEndY, prevEndZ, dirx, diry, dirz);
-        if(root.odnogiBłyskawicy == null || root.odnogiBłyskawicy.Length == 0)
+        if (root == null) return;
+        root.AktualizujNode(prevEndX, prevEndY, prevEndZ, dirx, diry, dirz, first);
+        if (root.odnogiBłyskawicy == null || root.odnogiBłyskawicy.Length == 0)
         {
             return;
         }
-        for(byte i = 0; i < root.odnogiBłyskawicy.Length; i++)
+        for (byte i = 0; i < root.odnogiBłyskawicy.Length; i++)
         {
-            HelperZaktualizujBłyskawicę(root.odnogiBłyskawicy[i], dirx, diry, dirz, root.ePos.x, root.ePos.y, root.ePos.z);
+            HelperZaktualizujBłyskawicę(root.odnogiBłyskawicy[i], dirx, diry, dirz, root.ePos.x, root.ePos.y, root.ePos.z, (i == 0) ? true : false);
         }
     }
 }
@@ -85,7 +85,7 @@ public class NodeBłyskawica
 {
     public Vector3 sPos;
     public Vector3 ePos;
-    [SerializeField]public NodeBłyskawica[] odnogiBłyskawicy = null;
+    [SerializeField] public NodeBłyskawica[] odnogiBłyskawicy = null;
     public bool actualUse = false;
     public NodeBłyskawica()
     {
@@ -117,12 +117,27 @@ public class NodeBłyskawica
             odnogiBłyskawicy = nodeBłyskawicas2;
         }
     }
-    public void AktualizujNode(float x, float y, float z, float dirx, float diry, float dirz)
+    public void AktualizujNode(float x, float y, float z, float dirx, float diry, float dirz, bool itFirst = false)
     {
         sPos.x = x;
         sPos.y = y;
         sPos.z = z;
-        DodajEndPos(dirx, diry, dirz);
+        if (itFirst)
+        {
+            DodajEndPos(dirx, diry, dirz);
+        }
+        else
+        {
+            AktualizujOdnogę(dirx, diry, dirz, itFirst);
+        }
+    }
+    public void AktualizujOdnogę(float x, float y, float z, bool first = true)
+    {
+        float nx = x + UnityEngine.Random.Range(((first) ? -1.45f : -3.40f) * x, ((first) ? 1.45f : 3.40f) * x);
+        float ny = y + UnityEngine.Random.Range(-0.45f * y, 0.45f * y);
+        float nz = z + UnityEngine.Random.Range(((first) ? -0.55f : 2.40f) * z, ((first) ? 0.55f : 2.40f) * z);
+        DodajEndPos(nx, ny, nz);
+
     }
     ///<summary>Metoda tworzy odnogę biorąc pod uwagę kierunek podany w parametrach.</summary>
     ///<param name="x">Kierunek osi X.</param>
