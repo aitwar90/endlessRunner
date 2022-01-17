@@ -85,9 +85,9 @@ public static class Dane
         WczytajDane(coZaładować);
         if(coZaładować == 1)    //Ładuj opcje
         {
-            ManagerUI.managerUI.UstawGłośnośćDźwięku = poziomDźwięku;
-            ManagerUI.managerUI.UstawGłośnośćMuzyki = poziomMuzyki;
-            ManagerUI.managerUI.UstawJęzyk((byte)ustalonyJęzyk);
+            ManagerMainUI.managerMainUI.UstawGłośnośćDźwięku = poziomDźwięku;
+            ManagerMainUI.managerMainUI.UstawGłośnośćMuzyki = poziomMuzyki;
+            ManagerMainUI.managerMainUI.UstawJęzyk((byte)ustalonyJęzyk);
         }
         else if(coZaładować == 2)   //Ładuj grę
         {

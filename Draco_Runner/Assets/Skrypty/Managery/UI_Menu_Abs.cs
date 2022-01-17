@@ -6,9 +6,20 @@ using UnityEngine.UI;
 public abstract class UI_Menu_Abs : MonoBehaviour
 {
     private byte indeksAktJezyka = 0;
+    public GameObject[] tablicaPaneli;
+    protected byte actualActivePanel;
     // Start is called before the first frame update
     protected virtual void Start()
     {
+        actualActivePanel = 255;
+        if (tablicaPaneli != null && tablicaPaneli.Length > 0)
+        {
+            for (byte i = 0; i < tablicaPaneli.Length; i++)
+            {
+                DisablePanel(i);
+            }
+            UstawPanel(0);
+        }
         UstawJęzyk((byte)Dane.ustalonyJęzyk);
     }
 
@@ -26,7 +37,7 @@ public abstract class UI_Menu_Abs : MonoBehaviour
             Debug.Log("Indeks zgodny jest z aktualnym językiem");
             return;
         }
-        if(ManagerGry.managerGry.jezykiTekst == null)   //Brak pliku tekstowego
+        if (ManagerGry.managerGry.jezykiTekst == null)   //Brak pliku tekstowego
         {
             Debug.Log("Brak pliku tekstowego zawierającego jezyki (ManagerGry na scenie Dane języki");
             return;
@@ -42,13 +53,27 @@ public abstract class UI_Menu_Abs : MonoBehaviour
         {
             string[] pFrazy = fLines[i].Split('|');
             //ustIdx to indeks jaki ma zostać przypisany do poszczególnych elementów textu
-            for(ushort j = 0; j < wszystkieDane.Length; j++)
+            for (ushort j = 0; j < wszystkieDane.Length; j++)
             {
-                if(wszystkieDane[j].gameObject.name == pFrazy[0])
+                if (wszystkieDane[j].gameObject.name == pFrazy[0])
                 {
                     wszystkieDane[j].text = pFrazy[ustIdx]; //Ustawiam konkretny tekst do konkretnego komponentu Text
                 }
             }
         }
+    }
+    public void UstawPanel(int idxPanel)
+    {
+        if (actualActivePanel == idxPanel || tablicaPaneli == null || idxPanel >= tablicaPaneli.Length) return;
+
+        if (actualActivePanel < tablicaPaneli.Length)
+            tablicaPaneli[actualActivePanel].SetActive(false);
+        tablicaPaneli[idxPanel].SetActive(true);
+        actualActivePanel = (byte)idxPanel;
+    }
+    public void DisablePanel(int idxPanel)
+    {
+        if (tablicaPaneli == null || idxPanel >= tablicaPaneli.Length) return;
+        tablicaPaneli[idxPanel].SetActive(false);
     }
 }
