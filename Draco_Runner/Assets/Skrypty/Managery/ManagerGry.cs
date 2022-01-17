@@ -23,22 +23,27 @@ public class ManagerGry : MonoBehaviour
         Dane.ŁadujDane(0);
         ZaładujScenęOIndeksie(2);
     }
+    ///<summary>Ładuje i wyładowywuje sceny o zadanym indeksie (Przy przechodzeniu między UI gry)</summary>
+    public void ZaładujIWyładujSceny(byte[] indeksyDoZaładowania, byte[] indeksyDoWyładowania)
+    {
+        StartCoroutine(ŁadujSceny(indeksyDoZaładowania, indeksyDoWyładowania));
+    }
     /**
     <summary>
-    Metoda ładuje scene o zadanym indeksie.
+    Metoda ładuje scene o zadanym indeksie. (Przy przechodzeniu między scenami gry)
     </summary>
     <param name="sceneIndex">Indeks sceny jaka ma zostać załadowana.</param>
     */
     public void ZaładujScenęOIndeksie(byte sceneIndex)
     {
-        byte coWykonaćPo = 0;
+        //byte coWykonaćPo = 0;
         bool czyMainUI = true;
-        if(sceneIndex > 3)
+        if (sceneIndex > 3)
         {
-            coWykonaćPo = 1;
+            //coWykonaćPo = 1;
             czyMainUI = false;
         }
-        StartCoroutine(CzekajAżZaładujęScenę(coWykonaćPo, sceneIndex));    //Ładuj dane opcji
+        //StartCoroutine(CzekajAżZaładujęScenę(coWykonaćPo, sceneIndex));    //Ładuj dane opcji
         StartCoroutine(ŁadujSceny(sceneIndex, czyMainUI));
     }
     ///<summary>Funkcja czeka, aż zostanie załadowana zadana scena.</summary>
@@ -50,7 +55,7 @@ public class ManagerGry : MonoBehaviour
         switch (coWykonaćPo)
         {
             case 0: //Po załadowaniu Załaduj dane
-                yield return new WaitUntil(()=>ManagerUI.managerUI != null);
+                yield return new WaitUntil(() => ManagerUI.managerUI != null);
                 Dane.ŁadujDane(1);
                 break;
             case 1:
@@ -66,23 +71,46 @@ public class ManagerGry : MonoBehaviour
     {
         AsyncOperation asyncOperation = new AsyncOperation();
         //Deaktywuj wszystkie sceny z wyjątkiem Dane (sceny z build index 0)
-        for(int i = 1; i < SceneManager.sceneCount; i++)
+        for (int i = SceneManager.sceneCount-1; i > 0; i--)
         {
             asyncOperation = SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(i));
-            yield return new WaitUntil(()=> asyncOperation.isDone);
+            yield return new WaitUntil(() => asyncOperation.isDone);
         }
         //Załaduj scenę Loading
         asyncOperation = SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
-        yield return new WaitUntil(()=> asyncOperation.isDone);
+        yield return new WaitUntil(() => asyncOperation.isDone);
         //Załaduj właściwą scenę jaką chcesz odpalić
         asyncOperation = SceneManager.LoadSceneAsync(scenaDoZaładowania, LoadSceneMode.Additive);
-        yield return new WaitUntil(()=>asyncOperation.isDone);
+        yield return new WaitUntil(() => asyncOperation.isDone);
         //Wyłącz scenę Loading
         asyncOperation = SceneManager.UnloadSceneAsync(1);
         //Załaduj scenę z UI
-        if(!czyMainUI)
-        { 
+        if (!czyMainUI)
+        {
             SceneManager.LoadSceneAsync(3, LoadSceneMode.Additive);
         }
+    }
+    private IEnumerator ŁadujSceny(byte[] scenyDoZaładowania, byte[] scenyDoWyładowania)
+    {
+        AsyncOperation asyncOperation = new AsyncOperation();
+        asyncOperation = SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
+        yield return new WaitUntil(() => asyncOperation.isDone);
+        if (scenyDoWyładowania != null || scenyDoWyładowania.Length > 0)
+        {
+            for (int i = 0; i < scenyDoWyładowania.Length; i++)
+            {
+                asyncOperation = SceneManager.UnloadSceneAsync(scenyDoWyładowania[i]);
+                yield return new WaitUntil(() => asyncOperation.isDone);
+            }
+        }
+        if (scenyDoZaładowania != null || scenyDoZaładowania.Length > 0)
+        {
+            for (int i = 0; i < scenyDoZaładowania.Length; i++)
+            {
+                asyncOperation = SceneManager.LoadSceneAsync(scenyDoZaładowania[i], LoadSceneMode.Additive);
+                yield return new WaitUntil(() => asyncOperation.isDone);
+            }
+        }
+        asyncOperation = SceneManager.UnloadSceneAsync(1);
     }
 }

@@ -87,7 +87,7 @@ public static class Dane
         {
             ManagerMainUI.managerMainUI.UstawGłośnośćDźwięku = poziomDźwięku;
             ManagerMainUI.managerMainUI.UstawGłośnośćMuzyki = poziomMuzyki;
-            ManagerMainUI.managerMainUI.UstawJęzyk((byte)ustalonyJęzyk);
+            //ManagerMainUI.managerMainUI.UstawJęzyk((byte)ustalonyJęzyk);
         }
         else if(coZaładować == 2)   //Ładuj grę
         {

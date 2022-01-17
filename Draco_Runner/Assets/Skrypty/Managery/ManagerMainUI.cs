@@ -41,7 +41,10 @@ public class ManagerMainUI : UI_Menu_Abs
     void Awake()
     {
         if (managerMainUI == null)
+        {
             managerMainUI = this;
+            Dane.ŁadujDane(2);
+        }
         else
             Destroy(this);
     }
@@ -70,6 +73,13 @@ public class ManagerMainUI : UI_Menu_Abs
     public void OpuśćGrę()
     {
         Application.Quit();
+    }
+    public void WznówGrę()
+    {
+         if(Time.timeScale == 0)
+         {
+             ManagerGry.managerGry.ZaładujIWyładujSceny(new byte[] {3}, new byte[] {2});
+         }
     }
     public void WróćDoMenuWMenu()
     {
