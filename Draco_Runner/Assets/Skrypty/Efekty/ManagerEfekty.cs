@@ -5,15 +5,30 @@ using UnityEngine;
 public class ManagerEfekty : MonoBehaviour
 {
     public static ManagerEfekty instance = null;
-    public BłyskawicaSkrypt bScript = null;
+    public VisualBase bScript = null;
     public Vector3 posStart;
     private bool wygenerowane = true;
     public Vector3 posPlayer;
     private byte idx = 0;
+    private byte typeOfMap = 0;
     void Awake()
     {
         if(instance == null) instance = this;
         else Destroy(this);
+        switch(typeOfMap)
+        {
+            case 0:
+            BłyskawicaSkrypt bs = new BłyskawicaSkrypt();
+            bScript = bs;
+            break;
+            case 1:
+            WulkanicznaKulaScript wks = new WulkanicznaKulaScript();
+            bScript = wks;
+            break;
+            case 2:
+
+            break;
+        }
         bScript = new BłyskawicaSkrypt();
     }
     // Start is called before the first frame update
@@ -28,6 +43,7 @@ public class ManagerEfekty : MonoBehaviour
         
     }
     #region Visualize effects
+    //Błyskawica
     public void StartCorouiteStorms(byte idx)
     {
         StartCoroutine(ObsługaBłyskawiy(idx, 1.25f, 10.75f));

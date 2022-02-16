@@ -4,9 +4,54 @@ using UnityEngine;
 
 public class BłyskawicaSkrypt : VisualBase
 {
-    public void GenerujBłyskawicę(Vector3 root, Vector3 targetPosition)
+    public override void GenerujBłyskawicę(Vector3 root, Vector3 targetPosition)
     {
         Vector3 temp = targetPosition - root;
+        temp = temp.normalized;
+        if (temp.x == 0.0) temp.x = Random.Range(-0.1f, 0.11f);
+        if (temp.y == 0.0) temp.y = Random.Range(-0.1f, 0.11f);
+        if (temp.z == 0.0) temp.z = Random.Range(-0.1f, 0.11f);
+        temp *= UnityEngine.Random.Range(0.85f, 1.45f);
+        byte count = 0;
+        NodeBłyskawica nBłyskawica = null;
+        if (błyskawiceRoot == null)
+        {
+            błyskawiceRoot = new NodeBłyskawica[1];
+            nBłyskawica = new NodeBłyskawica(root.x, root.y, root.z, temp.x, temp.y, temp.z);
+            błyskawiceRoot[0] = nBłyskawica;
+            HelperGenerujBłyskawicę(błyskawiceRoot[0], temp.x, temp.y, temp.z, count);
+            ManagerEfekty.instance.StartCorouiteStorms(0);
+            return;
+        }
+        else
+        {
+            for (byte i = 0; i < błyskawiceRoot.Length; i++)
+            {
+                if (!błyskawiceRoot[i].actualUse)
+                {
+                    //Użyj tej błyskawicy
+                    nBłyskawica = błyskawiceRoot[i];
+                    HelperZaktualizujBłyskawicę(nBłyskawica, temp.x, temp.y, temp.z, root.x, root.y, root.z);
+                    ManagerEfekty.instance.StartCorouiteStorms(i);
+                    return;
+                }
+            }
+            //Stwórz nową błyskawicę
+            NodeBłyskawica[] nBłys = new NodeBłyskawica[błyskawiceRoot.Length + 1];
+            for (byte i = 0; i < błyskawiceRoot.Length; i++)
+            {
+                nBłys[i] = błyskawiceRoot[i];
+            }
+            błyskawiceRoot = nBłys;
+            nBłyskawica = new NodeBłyskawica(root.x, root.y, root.z, temp.x, temp.y, temp.z);
+            błyskawiceRoot[błyskawiceRoot.Length - 1] = nBłyskawica;
+            HelperGenerujBłyskawicę(błyskawiceRoot[błyskawiceRoot.Length - 1], temp.x, temp.y, temp.z, count);
+            ManagerEfekty.instance.StartCorouiteStorms((byte)(błyskawiceRoot.Length - 1));
+        }
+    }
+    public override void GenerujBłyskawicę()
+    {
+        Vector3 temp = targetPositionBase - root;
         temp = temp.normalized;
         if (temp.x == 0.0) temp.x = Random.Range(-0.1f, 0.11f);
         if (temp.y == 0.0) temp.y = Random.Range(-0.1f, 0.11f);
