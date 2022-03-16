@@ -22,9 +22,7 @@ public class ManagerDźwięku : MonoBehaviour
     }
     ///<summary>Metoda generuje obiekt z AudioSource ustawia klip do odtworzenia. Po zakończeniu odtwarzania zostanie on usunięty</summary>
     ///<param name="type">Jaki typ klipu ma zostać wylosowany do przypisania (0-Menu, 1-Ambient gry...)</param>
-    ///<param name="isLoop">Czy metoda ma na audioSource ustawić loop?</param>
-    ///<param name="whatToDo">Co metoda ma zrobić po przypisaniu klipu -1 odtwórz, 0-poczekaj, aż zakończy się aktualna piosenka(nie może być loop)</param>
-    public void WygenerujAudioSourcePodClip(byte type, bool isLoop = false, sbyte whatToDo = -1)
+    public void WygenerujAudioSourcePodClip(byte type)
     {
         AudioSource tSource = null;
         if (wasGeneratedAudioSource == null || wasGeneratedAudioSource.Count == 0)
@@ -45,7 +43,7 @@ public class ManagerDźwięku : MonoBehaviour
         {
             tSource.outputAudioMixerGroup = master.FindMatchingGroups("Master/SoundV")[0];
         }
-        SetAudio(ref tSource, type, isLoop, whatToDo);
+        SetAudio(ref tSource, type);
         StartCoroutine(WaitForEndMusic(() =>
         {
             if (wasGeneratedAudioSource == null)
