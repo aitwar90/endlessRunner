@@ -6,9 +6,10 @@ using UnityEngine.UI;
 public class ManagerMainUI : UI_Menu_Abs
 {
     public static ManagerMainUI managerMainUI = null;
-    public Slider sliderMuzyki;
-    public Slider sliderDźwięku;
-    public float UstawGłośnośćMuzyki
+    public Button sliderMuzyki;
+    public Button sliderDźwięku;
+    public AudioSource ambientSource;
+    public bool UstawGłośnośćMuzyki
     {
         get
         {
@@ -17,13 +18,14 @@ public class ManagerMainUI : UI_Menu_Abs
         set
         {
             Dane.poziomMuzyki = value;
-            if(sliderMuzyki != null && value != sliderMuzyki.value)
+            if(sliderMuzyki != null)
             {
-                sliderMuzyki.value = value;
+                sliderMuzyki.GetComponent<Image>().sprite = ((value) ? sliderMuzyki.GetComponentInParent<KontenerObrazków>().sprites[0] : sliderMuzyki.GetComponentInParent<KontenerObrazków>().sprites[1]);
             }
+            ManagerDźwięku.managerDźwięku.SetMixerMusic(value);
         }
     }
-    public float UstawGłośnośćDźwięku
+    public bool UstawGłośnośćDźwięku
     {
         get
         {
@@ -32,10 +34,11 @@ public class ManagerMainUI : UI_Menu_Abs
         set
         {
             Dane.poziomDźwięku = value;
-            if(sliderDźwięku != null && value != sliderDźwięku.value)
+            if(sliderDźwięku != null)
             {
-                sliderDźwięku.value = value;
+                sliderDźwięku.GetComponent<Image>().sprite = ((value) ? sliderDźwięku.GetComponentInParent<KontenerObrazków>().sprites[0] : sliderDźwięku.GetComponentInParent<KontenerObrazków>().sprites[1]);
             }
+            ManagerDźwięku.managerDźwięku.SetMixerSound(value);
         }
     }
     void Awake()
@@ -51,6 +54,7 @@ public class ManagerMainUI : UI_Menu_Abs
     protected override void Start()
     {
         base.Start();
+        ManagerDźwięku.managerDźwięku.SetAudio(ref ambientSource, 0, true);
     }
 
     // Update is called once per frame
@@ -68,7 +72,15 @@ public class ManagerMainUI : UI_Menu_Abs
     }
     public void OdpalAutorzy()
     {
-
+        
+    }
+    public void WłWyłMuzykę()
+    {
+        UstawGłośnośćMuzyki = !Dane.poziomMuzyki;
+    }
+    public void WłWyłDźwięki()
+    {
+        UstawGłośnośćDźwięku = !Dane.poziomDźwięku;
     }
     public void OpuśćGrę()
     {

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ManagerUI : UI_Menu_Abs
 {
     public static ManagerUI managerUI = null;
+    public AudioSource sourceAmbient;
     void Awake()
     {
         if(managerUI == null)
@@ -25,6 +26,7 @@ public class ManagerUI : UI_Menu_Abs
         {
             Time.timeScale = 1;
         }
+        ManagerDźwięku.managerDźwięku.SetAudio(ref sourceAmbient, 1, true);
     }
 
     // Update is called once per frame

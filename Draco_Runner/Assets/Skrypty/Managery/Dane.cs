@@ -5,8 +5,8 @@ using UnityEngine;
 
 public static class Dane
 {
-    public static float poziomMuzyki = 1.0f;
-    public static float poziomDźwięku = 1.0f;
+    public static bool poziomMuzyki = true;
+    public static bool poziomDźwięku = true;
     public static Język ustalonyJęzyk;
     public static int rekordPkt = 0;
     private static void InicjujDaneGra()
@@ -15,8 +15,8 @@ public static class Dane
     }
     private static void InicjujDaneOpcje()
     {
-        poziomMuzyki = 1.0f;
-        poziomDźwięku = 1.0f;
+        poziomMuzyki = true;
+        poziomDźwięku = true;
         ustalonyJęzyk = Język.Angielski;
     }
     ///<summary>Funkcja zapisuje dane do PlayerPrefs i zwraca 0 jeśli zapis został udany.</summary>
@@ -30,8 +30,8 @@ public static class Dane
         }
         else if (coZapisać == 1)
         {
-            PlayerPrefs.SetFloat("PoziomMuzyki", poziomMuzyki);
-            PlayerPrefs.SetFloat("PoziomDźwięku", poziomDźwięku);
+            PlayerPrefs.SetInt("PoziomMuzyki", (poziomMuzyki) ? 1 : 0);
+            PlayerPrefs.SetInt("PoziomDźwięku", (poziomDźwięku) ? 1 : 0);
             PlayerPrefs.SetInt("Język", (int)ustalonyJęzyk);
 
             return 0;
@@ -59,8 +59,8 @@ public static class Dane
         {
             if (PlayerPrefs.HasKey("PoziomMuzyki"))
             {
-                poziomMuzyki = PlayerPrefs.GetFloat("PoziomMuzyki", 1.0f);
-                poziomDźwięku = PlayerPrefs.GetFloat("PoziomDźwięku", 1.0f);
+                poziomMuzyki = (PlayerPrefs.GetInt("PoziomMuzyki", 1) == 1) ? true : false;
+                poziomDźwięku = (PlayerPrefs.GetInt("PoziomDźwięku", 1) == 1) ? true : false;
                 ustalonyJęzyk = Język.Angielski;
                 ustalonyJęzyk += PlayerPrefs.GetInt("Język", 0);
                 /*
