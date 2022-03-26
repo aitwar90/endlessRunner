@@ -172,6 +172,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8fdc375bc35b5a8099bdea1dcc8ee44a, type: 3}
   klipyAmbient:
   - {fileID: 8300000, guid: 345874b0b97e6470c98195c926a49f06, type: 3}
+  - {fileID: 8300000, guid: 63d88f725d850e672b605bae9228a09e, type: 3}
 --- !u!114 &1292709156
 MonoBehaviour:
   m_ObjectHideFlags: 0
