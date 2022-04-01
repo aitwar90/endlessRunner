@@ -22,7 +22,6 @@ public class BłyskawicaSkrypt : VisualBase
             myElementRoot = nBłyskawica;
             HelperGenerujBłyskawicę(nBłyskawica, temp.x, temp.y, temp.z, count);
             PrzypiszVisualObiectBase();
-            ActivateMe();
             return;
         }
         else
@@ -33,7 +32,6 @@ public class BłyskawicaSkrypt : VisualBase
                 nBłyskawica = (NodeBłyskawica)myElementRoot;
                 HelperZaktualizujBłyskawicę(nBłyskawica, temp.x, temp.y, temp.z, root.x, root.y, root.z);
                 PrzypiszVisualObiectBase();
-                ActivateMe();
                 return;
             }
             else
@@ -60,7 +58,6 @@ public class BłyskawicaSkrypt : VisualBase
             myElementRoot = nBłyskawica;
             HelperGenerujBłyskawicę(nBłyskawica, temp.x, temp.y, temp.z, count);
             PrzypiszVisualObiectBase();
-            ActivateMe();
             return;
         }
         else
@@ -71,7 +68,6 @@ public class BłyskawicaSkrypt : VisualBase
                 nBłyskawica = (NodeBłyskawica)myElementRoot;
                 HelperZaktualizujBłyskawicę(nBłyskawica, temp.x, temp.y, temp.z, root.x, root.y, root.z);
                 PrzypiszVisualObiectBase();
-                ActivateMe();
                 return;
             }
             else
@@ -91,17 +87,8 @@ public class BłyskawicaSkrypt : VisualBase
             vob = go.AddComponent<BłyskawicaObjectBase>();
         }
         vob.MyElementRoot = myElementRoot;
+        vob.ActivateMe();
         visualObjectBase = vob;
-    }
-    public override void ActivateMe()
-    {
-        myElementRoot.actualUse = true;
-        //StartCoroutine(ObsługaBłyskawiy(1.25f, 10.75f));
-    }
-    public override void DezactivateMe()
-    {
-        myElementRoot.actualUse = false;
-        ManagerEfectówScript.instance.AddToStackVisualData(this.myElementRoot, 1);
     }
     public override void GenerujEfekt()
     {

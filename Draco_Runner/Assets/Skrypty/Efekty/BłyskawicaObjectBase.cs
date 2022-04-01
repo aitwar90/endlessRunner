@@ -26,11 +26,21 @@ public class BłyskawicaObjectBase : VisualObjectBase
             HelperShowBłyskawicę(aksCheckNode.odnogiBłyskawicy[i]);
         }
     }
+    public override void ActivateMe()
+    {
+        StartCoroutine(ObsługaBłyskawiy(1.25f, 10.75f));
+    }
+    protected override void DezactivateMe()
+    {
+        myElementRoot.actualUse = false;
+        ManagerEfectówScript.instance.AddToStackVisualData(myElementRoot, 1);
+        ManagerEfectówScript.instance.AddToStackObject(this, 1);
+    }
     private IEnumerator ObsługaBłyskawiy(float fTime, float sTime)
     {
         yield return new WaitForSeconds(fTime);
-        //myElementRoot.ActivateMe();
+        myElementRoot.actualUse = true;
         yield return new WaitForSeconds(sTime);
-        //myElementRoot.DezactivateMe();
+        DezactivateMe();
     }
 }

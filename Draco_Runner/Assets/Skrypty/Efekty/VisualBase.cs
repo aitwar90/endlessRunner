@@ -18,8 +18,6 @@ public abstract class VisualBase
         root.y = y;
         root.z = z;
     }
-    public abstract void ActivateMe();
-    public abstract void DezactivateMe();
     public abstract void GenerujEfekt();
     public abstract void GenerujEfekt(Vector3 root, Vector3 targetPosition);
 }

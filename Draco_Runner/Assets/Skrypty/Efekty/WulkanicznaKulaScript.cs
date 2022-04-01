@@ -10,13 +10,5 @@ public class WulkanicznaKulaScript : VisualBase
     {
 
     }
-    public override void ActivateMe()
-    {
-
-    }
-    public override void DezactivateMe()
-    {
-        
-    }
 }
 
