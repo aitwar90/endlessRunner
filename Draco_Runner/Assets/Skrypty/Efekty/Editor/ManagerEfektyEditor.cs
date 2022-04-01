@@ -10,13 +10,13 @@ public class ManagerEfektyEditor : Editor
     {
         DrawDefaultInspector();
         ManagerEfekty myScript = (ManagerEfekty)target;
-        if(GUILayout.Button("Update błyskawice"))
+        if(GUILayout.Button("Generuj błyskawice"))
         {
-            myScript.GenerateAnotherOne();
+            myScript.GenerateVisualObject(TypeVisualBase.Błyskawica);
         }
-        if(GUILayout.Button("Kasuj błyskawice"))
+        if(GUILayout.Button("Generuj Kulę lawy"))
         {
-            myScript.KasujBłyskawice();
+            myScript.GenerateVisualObject(TypeVisualBase.KulaLawy);
         }
         EditorGUILayout.HelpBox("This is a help box", MessageType.Info);
     }

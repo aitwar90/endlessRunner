@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
+using System.Collections;
 public class BłyskawicaSkrypt : VisualBase
 {
-    public override void GenerujBłyskawicę(Vector3 root, Vector3 targetPosition)
+    private void GenerujBłyskawicę(Vector3 root, Vector3 targetPosition)
     {
         Vector3 temp = targetPosition - root;
         temp = temp.normalized;
@@ -14,42 +12,39 @@ public class BłyskawicaSkrypt : VisualBase
         temp *= UnityEngine.Random.Range(0.85f, 1.45f);
         byte count = 0;
         NodeBłyskawica nBłyskawica = null;
-        if (błyskawiceRoot == null)
+        if (myElementRoot == null)
         {
-            błyskawiceRoot = new NodeBłyskawica[1];
+            myElementRoot = ManagerEfectówScript.instance.GetFromStackVisualData(1);
+        }
+        if (myElementRoot == null)
+        {
             nBłyskawica = new NodeBłyskawica(root.x, root.y, root.z, temp.x, temp.y, temp.z);
-            błyskawiceRoot[0] = nBłyskawica;
-            HelperGenerujBłyskawicę(błyskawiceRoot[0], temp.x, temp.y, temp.z, count);
-            ManagerEfekty.instance.StartCorouiteStorms(0);
+            myElementRoot = nBłyskawica;
+            HelperGenerujBłyskawicę(nBłyskawica, temp.x, temp.y, temp.z, count);
+            PrzypiszVisualObiectBase();
+            ActivateMe();
             return;
         }
         else
         {
-            for (byte i = 0; i < błyskawiceRoot.Length; i++)
+            if (!myElementRoot.actualUse)
             {
-                if (!błyskawiceRoot[i].actualUse)
-                {
-                    //Użyj tej błyskawicy
-                    nBłyskawica = błyskawiceRoot[i];
-                    HelperZaktualizujBłyskawicę(nBłyskawica, temp.x, temp.y, temp.z, root.x, root.y, root.z);
-                    ManagerEfekty.instance.StartCorouiteStorms(i);
-                    return;
-                }
+                //Użyj tej błyskawicy
+                nBłyskawica = (NodeBłyskawica)myElementRoot;
+                HelperZaktualizujBłyskawicę(nBłyskawica, temp.x, temp.y, temp.z, root.x, root.y, root.z);
+                PrzypiszVisualObiectBase();
+                ActivateMe();
+                return;
             }
-            //Stwórz nową błyskawicę
-            NodeBłyskawica[] nBłys = new NodeBłyskawica[błyskawiceRoot.Length + 1];
-            for (byte i = 0; i < błyskawiceRoot.Length; i++)
+            else
             {
-                nBłys[i] = błyskawiceRoot[i];
+                BłyskawicaSkrypt bs = new BłyskawicaSkrypt();
+                bs.GenerujEfekt(root, targetPosition);
+                return;
             }
-            błyskawiceRoot = nBłys;
-            nBłyskawica = new NodeBłyskawica(root.x, root.y, root.z, temp.x, temp.y, temp.z);
-            błyskawiceRoot[błyskawiceRoot.Length - 1] = nBłyskawica;
-            HelperGenerujBłyskawicę(błyskawiceRoot[błyskawiceRoot.Length - 1], temp.x, temp.y, temp.z, count);
-            ManagerEfekty.instance.StartCorouiteStorms((byte)(błyskawiceRoot.Length - 1));
         }
     }
-    public override void GenerujBłyskawicę()
+    private void GenerujBłyskawicę()
     {
         Vector3 temp = targetPositionBase - root;
         temp = temp.normalized;
@@ -59,40 +54,62 @@ public class BłyskawicaSkrypt : VisualBase
         temp *= UnityEngine.Random.Range(0.85f, 1.45f);
         byte count = 0;
         NodeBłyskawica nBłyskawica = null;
-        if (błyskawiceRoot == null)
+        if (myElementRoot == null)
         {
-            błyskawiceRoot = new NodeBłyskawica[1];
             nBłyskawica = new NodeBłyskawica(root.x, root.y, root.z, temp.x, temp.y, temp.z);
-            błyskawiceRoot[0] = nBłyskawica;
-            HelperGenerujBłyskawicę(błyskawiceRoot[0], temp.x, temp.y, temp.z, count);
-            ManagerEfekty.instance.StartCorouiteStorms(0);
+            myElementRoot = nBłyskawica;
+            HelperGenerujBłyskawicę(nBłyskawica, temp.x, temp.y, temp.z, count);
+            PrzypiszVisualObiectBase();
+            ActivateMe();
             return;
         }
         else
         {
-            for (byte i = 0; i < błyskawiceRoot.Length; i++)
+            if (!myElementRoot.actualUse)
             {
-                if (!błyskawiceRoot[i].actualUse)
-                {
-                    //Użyj tej błyskawicy
-                    nBłyskawica = błyskawiceRoot[i];
-                    HelperZaktualizujBłyskawicę(nBłyskawica, temp.x, temp.y, temp.z, root.x, root.y, root.z);
-                    ManagerEfekty.instance.StartCorouiteStorms(i);
-                    return;
-                }
+                //Użyj tej błyskawicy
+                nBłyskawica = (NodeBłyskawica)myElementRoot;
+                HelperZaktualizujBłyskawicę(nBłyskawica, temp.x, temp.y, temp.z, root.x, root.y, root.z);
+                PrzypiszVisualObiectBase();
+                ActivateMe();
+                return;
             }
-            //Stwórz nową błyskawicę
-            NodeBłyskawica[] nBłys = new NodeBłyskawica[błyskawiceRoot.Length + 1];
-            for (byte i = 0; i < błyskawiceRoot.Length; i++)
+            else
             {
-                nBłys[i] = błyskawiceRoot[i];
+                BłyskawicaSkrypt bs = new BłyskawicaSkrypt();
+                bs.GenerujEfekt();
+                return;
             }
-            błyskawiceRoot = nBłys;
-            nBłyskawica = new NodeBłyskawica(root.x, root.y, root.z, temp.x, temp.y, temp.z);
-            błyskawiceRoot[błyskawiceRoot.Length - 1] = nBłyskawica;
-            HelperGenerujBłyskawicę(błyskawiceRoot[błyskawiceRoot.Length - 1], temp.x, temp.y, temp.z, count);
-            ManagerEfekty.instance.StartCorouiteStorms((byte)(błyskawiceRoot.Length - 1));
         }
+    }
+    private void PrzypiszVisualObiectBase()
+    {
+        VisualObjectBase vob = ManagerEfectówScript.instance.GetFromStackObject(1);
+        if(vob == null)
+        {
+            GameObject go = new GameObject("Błyskawica");
+            vob = go.AddComponent<BłyskawicaObjectBase>();
+        }
+        vob.MyElementRoot = myElementRoot;
+        visualObjectBase = vob;
+    }
+    public override void ActivateMe()
+    {
+        myElementRoot.actualUse = true;
+        //StartCoroutine(ObsługaBłyskawiy(1.25f, 10.75f));
+    }
+    public override void DezactivateMe()
+    {
+        myElementRoot.actualUse = false;
+        ManagerEfectówScript.instance.AddToStackVisualData(this.myElementRoot, 1);
+    }
+    public override void GenerujEfekt()
+    {
+        GenerujBłyskawicę();
+    }
+    public override void GenerujEfekt(Vector3 root, Vector3 targetPosition)
+    {
+        GenerujBłyskawicę(root, targetPosition);
     }
     private void HelperGenerujBłyskawicę(NodeBłyskawica aktSprawdzany, float dirx, float diry, float dirz, byte cout)
     {
@@ -126,12 +143,10 @@ public class BłyskawicaSkrypt : VisualBase
     }
 }
 [System.Serializable]
-public class NodeBłyskawica
+public class NodeBłyskawica : ElementVisual
 {
-    public Vector3 sPos;
     public Vector3 ePos;
     [SerializeField] public NodeBłyskawica[] odnogiBłyskawicy = null;
-    public bool actualUse = false;
     public NodeBłyskawica()
     {
 

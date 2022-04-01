@@ -1,28 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class VisualBase
 {
-    [SerializeField]public NodeBłyskawica[] błyskawiceRoot;
+    public ElementVisual myElementRoot = null;
     public Vector3 targetPositionBase;
     public Vector3 root;
-    public void UpdatePlayerPosition(float x, float y, float z)
+    protected VisualObjectBase visualObjectBase = null;
+    public void SetTargetPosition(float x, float y, float z)
     {
         targetPositionBase.x = x;
         targetPositionBase.y = y;
         targetPositionBase.z = z;
     }
-    public virtual void GenerujBłyskawicę()
+    public void SetRootPosition(float x, float y, float z)
     {
-
+        root.x = x;
+        root.y = y;
+        root.z = z;
     }
-    public virtual void GenerujBłyskawicę(Vector3 root, Vector3 targetPosition)
-    {
-
-    }
-    public virtual void GenerujKulęLawy()
-    {
-
-    }
+    public abstract void ActivateMe();
+    public abstract void DezactivateMe();
+    public abstract void GenerujEfekt();
+    public abstract void GenerujEfekt(Vector3 root, Vector3 targetPosition);
+}
+public class ElementVisual
+{
+    public bool actualUse = false;
+    public Vector3 sPos;
 }
