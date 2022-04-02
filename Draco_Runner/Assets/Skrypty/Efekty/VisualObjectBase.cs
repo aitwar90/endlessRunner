@@ -13,5 +13,6 @@ public abstract class VisualObjectBase : MonoBehaviour
         }
     }
     public abstract void ActivateMe();
+    public abstract void ResetMe();
     protected abstract void DezactivateMe();
 }

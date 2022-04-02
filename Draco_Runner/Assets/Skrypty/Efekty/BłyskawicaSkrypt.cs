@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 public class BłyskawicaSkrypt : VisualBase
 {
     private void GenerujBłyskawicę(Vector3 root, Vector3 targetPosition)
@@ -44,39 +43,7 @@ public class BłyskawicaSkrypt : VisualBase
     }
     private void GenerujBłyskawicę()
     {
-        Vector3 temp = targetPositionBase - root;
-        temp = temp.normalized;
-        if (temp.x == 0.0) temp.x = Random.Range(-0.1f, 0.11f);
-        if (temp.y == 0.0) temp.y = Random.Range(-0.1f, 0.11f);
-        if (temp.z == 0.0) temp.z = Random.Range(-0.1f, 0.11f);
-        temp *= UnityEngine.Random.Range(0.85f, 1.45f);
-        byte count = 0;
-        NodeBłyskawica nBłyskawica = null;
-        if (myElementRoot == null)
-        {
-            nBłyskawica = new NodeBłyskawica(root.x, root.y, root.z, temp.x, temp.y, temp.z);
-            myElementRoot = nBłyskawica;
-            HelperGenerujBłyskawicę(nBłyskawica, temp.x, temp.y, temp.z, count);
-            PrzypiszVisualObiectBase();
-            return;
-        }
-        else
-        {
-            if (!myElementRoot.actualUse)
-            {
-                //Użyj tej błyskawicy
-                nBłyskawica = (NodeBłyskawica)myElementRoot;
-                HelperZaktualizujBłyskawicę(nBłyskawica, temp.x, temp.y, temp.z, root.x, root.y, root.z);
-                PrzypiszVisualObiectBase();
-                return;
-            }
-            else
-            {
-                BłyskawicaSkrypt bs = new BłyskawicaSkrypt();
-                bs.GenerujEfekt();
-                return;
-            }
-        }
+        GenerujBłyskawicę(root, targetPositionBase);
     }
     private void PrzypiszVisualObiectBase()
     {
@@ -132,7 +99,6 @@ public class BłyskawicaSkrypt : VisualBase
 [System.Serializable]
 public class NodeBłyskawica : ElementVisual
 {
-    public Vector3 ePos;
     [SerializeField] public NodeBłyskawica[] odnogiBłyskawicy = null;
     public NodeBłyskawica()
     {

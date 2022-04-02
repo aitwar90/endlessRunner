@@ -36,6 +36,11 @@ public class BłyskawicaObjectBase : VisualObjectBase
         ManagerEfectówScript.instance.AddToStackVisualData(myElementRoot, 1);
         ManagerEfectówScript.instance.AddToStackObject(this, 1);
     }
+    public override void ResetMe()
+    {
+        StopCoroutine("ObsługaBłyskawiy");
+        myElementRoot.actualUse = false;
+    }
     private IEnumerator ObsługaBłyskawiy(float fTime, float sTime)
     {
         yield return new WaitForSeconds(fTime);

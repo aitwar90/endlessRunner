@@ -25,4 +25,9 @@ public class ElementVisual
 {
     public bool actualUse = false;
     public Vector3 sPos;
+    public Vector3 ePos;
+    public virtual Vector3 GetNextPoint()
+    {
+        return Vector3.negativeInfinity;
+    }
 }
