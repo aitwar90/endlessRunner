@@ -1,9 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BłyskawicaObjectBase : VisualObjectBase
 {
+
     void OnDrawGizmos()
     {
         if (myElementRoot.actualUse)
@@ -25,6 +25,11 @@ public class BłyskawicaObjectBase : VisualObjectBase
         {
             HelperShowBłyskawicę(aksCheckNode.odnogiBłyskawicy[i]);
         }
+    }
+    public override void InitializeMe(float posx, float posy, float posz)
+    {
+        this.transform.position = new Vector3(posx, posy, posz);
+        this.transform.rotation = Quaternion.identity;
     }
     public override void ActivateMe()
     {

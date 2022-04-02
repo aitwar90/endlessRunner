@@ -12,6 +12,7 @@ public abstract class VisualObjectBase : MonoBehaviour
             myElementRoot = value;
         }
     }
+    public abstract void InitializeMe(float posx, float posy, float posz);
     public abstract void ActivateMe();
     public abstract void ResetMe();
     protected abstract void DezactivateMe();

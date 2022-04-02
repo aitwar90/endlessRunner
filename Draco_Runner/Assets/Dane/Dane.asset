@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e2896b7da9dbaaaba029991f96c94cd, type: 3}
+  m_Name: Dane
+  m_EditorClassIdentifier: 
+  "pr\u0119dko\u015B\u0107Kuli": 10
+  prefabKuli: {fileID: 0}
+  "czasDoPojawieniaSi\u0119B\u0142yskawicy": 0.25
+  "czasTrwaniaB\u0142yskawicy": 15.5
+  "prefabPrzedB\u0142yskawic\u0105": {fileID: 0}
+  "prefabB\u0142yskawicy": {fileID: 0}

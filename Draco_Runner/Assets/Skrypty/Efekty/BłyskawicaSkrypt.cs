@@ -48,12 +48,21 @@ public class BłyskawicaSkrypt : VisualBase
     private void PrzypiszVisualObiectBase()
     {
         VisualObjectBase vob = ManagerEfectówScript.instance.GetFromStackObject(1);
-        if(vob == null)
+        if (vob == null)
         {
-            GameObject go = new GameObject("Błyskawica");
-            vob = go.AddComponent<BłyskawicaObjectBase>();
+            GameObject go = null;
+            if (ManagerEfectówScript.instance.dane.prefabBłyskawicy != null)
+            {
+                go = GameObject.Instantiate(ManagerEfectówScript.instance.dane.prefabBłyskawicy, root, Quaternion.identity);
+            }
+            else
+            {
+                go = new GameObject("Błyskawica");
+                vob = go.AddComponent<BłyskawicaObjectBase>();
+            }
         }
         vob.MyElementRoot = myElementRoot;
+        vob.InitializeMe(root.x, root.y, root.z);
         vob.ActivateMe();
         visualObjectBase = vob;
     }

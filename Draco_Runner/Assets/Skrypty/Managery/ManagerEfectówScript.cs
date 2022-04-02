@@ -6,6 +6,7 @@ public class ManagerEfectówScript : MonoBehaviour
     public static ManagerEfectówScript instance = null;
     private PoolingClass[] poolingEffects = null;
     private PoolingObjects[] poolingObjects = null;
+    public ValueSerialized dane;
     void Awake()
     {
         if (instance == null)
