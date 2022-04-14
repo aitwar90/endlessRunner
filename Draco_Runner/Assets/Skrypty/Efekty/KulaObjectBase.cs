@@ -2,7 +2,9 @@ using UnityEngine;
 
 public class KulaObjectBase : VisualObjectBase
 {
+    ///Pozycja końcowa, do której kula ma dotrzeć
     private Vector3 targetIdxPosition;
+    ///Aktualna pozycja kuli
     private Vector3 actualMyPosition = Vector3.zero;
     void Update()
     {

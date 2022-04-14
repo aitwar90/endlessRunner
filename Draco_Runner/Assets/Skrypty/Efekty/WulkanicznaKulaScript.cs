@@ -16,7 +16,63 @@ public class WulkanicznaKulaScript : VisualBase
     }
     private void GenerujPunktyKuli(Vector3 root, Vector3 targetPosition)
     {
+        Vector3 temp = targetPosition - root;
+        temp = temp.normalized;
+        if (temp.x == 0.0) temp.x = Random.Range(-0.05f, 0.05f);
+        if (temp.y == 0.0) temp.y = Random.Range(-0.05f, 0.05f);
+        if (temp.z == 0.0) temp.z = Random.Range(-0.05f, 0.05f);
 
+        NodeKula kula = null;
+        if(myElementRoot == null)
+        {
+            myElementRoot = ManagerEfectówScript.instance.GetFromStackVisualData(0);
+        }
+        if(myElementRoot == null)
+        {
+            kula = new NodeKula();
+            kula.AddToStack(HelperGenerujDaneKuli(ref targetPosition), true);
+            myElementRoot = kula;
+            PrzypiszVisualObiectBase();
+        }
+        else
+        {
+            if(!myElementRoot.actualUse)
+            {
+                kula = (NodeKula)myElementRoot;
+                kula.OverrideStack(AktualizujDaneKuli(ref targetPosition));
+                PrzypiszVisualObiectBase();
+                return;
+            }
+            else
+            {
+                WulkanicznaKulaScript wks = new WulkanicznaKulaScript();
+                wks.GenerujEfekt(root, targetPosition);
+                return;
+            }
+        }
+    }
+    private List<Vector3> HelperGenerujDaneKuli(ref Vector3 targetPosition)
+    {
+        float dist = Vector3.Distance(root, targetPosition);
+        float actDist = 0.0f;
+        float multiperDist = dist*0.15f;
+        Vector3 interpolationPosition = root;
+        List<Vector3> list = new List<Vector3>();
+        list.Add(interpolationPosition);
+        while(actDist < dist)
+        {
+            actDist += 0.75f;
+            float procDist = actDist / dist;
+            interpolationPosition = Vector3.Lerp(root, targetPosition, procDist);
+            float tmpOffset = (procDist - 0.5f);   //Ustalam dziedzinę funkcji od -0.5 do 0.5
+            interpolationPosition.y -= (tmpOffset*tmpOffset)*multiperDist;
+            list.Add(interpolationPosition);
+        }
+        return list;
+    }
+    private List<Vector3> AktualizujDaneKuli(ref Vector3 targetPosition)
+    {
+        return HelperGenerujDaneKuli(ref targetPosition);
     }
     private void PrzypiszVisualObiectBase()
     {
@@ -73,6 +129,12 @@ public class NodeKula : ElementVisual
         }
         if (reverse)
             ReverseStack();
+    }
+    public void OverrideStack(List<Vector3> pointsToAdd)
+    {
+        points = null;
+        CheckPoints();
+        AddToStack(pointsToAdd, true);
     }
     private void CheckPoints()
     {
