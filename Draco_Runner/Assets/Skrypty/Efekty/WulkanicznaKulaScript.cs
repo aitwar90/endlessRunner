@@ -51,7 +51,7 @@ public class WulkanicznaKulaScript : VisualBase
             }
         }
     }
-    private List<Vector3> HelperGenerujDaneKuli(ref Vector3 targetPosition)
+    private Vector3[] HelperGenerujDaneKuli(ref Vector3 targetPosition)
     {
         float dist = Vector3.Distance(root, targetPosition);
         float actDist = 0.0f;
@@ -61,7 +61,7 @@ public class WulkanicznaKulaScript : VisualBase
         list.Add(interpolationPosition);
         while(actDist < dist)
         {
-            actDist += 0.75f;
+            actDist += 1.25f;
             float procDist = actDist / dist;
             interpolationPosition = Vector3.Lerp(root, targetPosition, procDist);
             float tmpOffset = (procDist - 0.5f);   //Ustalam dziedzinę funkcji od -0.5 do 0.5
@@ -69,9 +69,9 @@ public class WulkanicznaKulaScript : VisualBase
             list.Add(interpolationPosition);
         }
         list.Add(targetPosition);
-        return list;
+        return list.ToArray();
     }
-    private List<Vector3> AktualizujDaneKuli(ref Vector3 targetPosition)
+    private Vector3[] AktualizujDaneKuli(ref Vector3 targetPosition)
     {
         return HelperGenerujDaneKuli(ref targetPosition);
     }
@@ -131,7 +131,7 @@ public class NodeKula : ElementVisual
         if (reverse)
             ReverseStack();
     }
-    public void OverrideStack(List<Vector3> pointsToAdd)
+    public void OverrideStack(Vector3[] pointsToAdd)
     {
         points = null;
         CheckPoints();
