@@ -68,6 +68,7 @@ public class WulkanicznaKulaScript : VisualBase
             interpolationPosition.y -= (tmpOffset*tmpOffset)*multiperDist;
             list.Add(interpolationPosition);
         }
+        list.Add(targetPosition);
         return list;
     }
     private List<Vector3> AktualizujDaneKuli(ref Vector3 targetPosition)
