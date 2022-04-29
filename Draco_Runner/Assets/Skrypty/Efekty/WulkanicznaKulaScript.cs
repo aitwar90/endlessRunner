@@ -6,9 +6,11 @@ public class WulkanicznaKulaScript : VisualBase
     {
         GenerujPunktyKuli();
     }
-    public override void GenerujEfekt(Vector3 root, Vector3 targetPosition)
+    public override void GenerujEfekt(Vector3 _root, Vector3 targetPosition)
     {
-        GenerujPunktyKuli(root, targetPosition);
+        this.root = _root;
+        this.targetPositionBase = RandomizeVector(ref targetPosition);
+        GenerujPunktyKuli();
     }
     private void GenerujPunktyKuli()
     {
@@ -16,12 +18,6 @@ public class WulkanicznaKulaScript : VisualBase
     }
     private void GenerujPunktyKuli(Vector3 root, Vector3 targetPosition)
     {
-        Vector3 temp = targetPosition - root;
-        temp = temp.normalized;
-        if (temp.x == 0.0) temp.x = Random.Range(-0.05f, 0.05f);
-        if (temp.y == 0.0) temp.y = Random.Range(-0.05f, 0.05f);
-        if (temp.z == 0.0) temp.z = Random.Range(-0.05f, 0.05f);
-
         NodeKula kula = null;
         if(myElementRoot == null)
         {
@@ -29,8 +25,9 @@ public class WulkanicznaKulaScript : VisualBase
         }
         if(myElementRoot == null)
         {
+            myElementRoot = new ElementVisual();
             kula = new NodeKula();
-            kula.AddToStack(HelperGenerujDaneKuli(ref targetPosition), true);
+            kula.AddToStack(HelperGenerujDaneKuli(), true);
             myElementRoot = kula;
             PrzypiszVisualObiectBase();
         }
@@ -39,7 +36,7 @@ public class WulkanicznaKulaScript : VisualBase
             if(!myElementRoot.actualUse)
             {
                 kula = (NodeKula)myElementRoot;
-                kula.OverrideStack(AktualizujDaneKuli(ref targetPosition));
+                kula.OverrideStack(AktualizujDaneKuli());
                 PrzypiszVisualObiectBase();
                 return;
             }
@@ -51,9 +48,9 @@ public class WulkanicznaKulaScript : VisualBase
             }
         }
     }
-    private Vector3[] HelperGenerujDaneKuli(ref Vector3 targetPosition)
+    private Vector3[] HelperGenerujDaneKuli()
     {
-        float dist = Vector3.Distance(root, targetPosition);
+        float dist = Vector3.Distance(root, targetPositionBase);
         float actDist = 0.0f;
         float multiperDist = dist*0.15f;
         Vector3 interpolationPosition = root;
@@ -62,18 +59,30 @@ public class WulkanicznaKulaScript : VisualBase
         while(actDist < dist)
         {
             actDist += 1.25f;
+            if(actDist > dist)
+            {
+                actDist = dist;
+            }
             float procDist = actDist / dist;
-            interpolationPosition = Vector3.Lerp(root, targetPosition, procDist);
+            interpolationPosition = Vector3.Lerp(root, targetPositionBase, procDist);
             float tmpOffset = (procDist - 0.5f);   //Ustalam dziedzinę funkcji od -0.5 do 0.5
-            interpolationPosition.y -= (tmpOffset*tmpOffset)*multiperDist;
+            interpolationPosition.y -= ((tmpOffset*tmpOffset)-0.25f)*multiperDist;
             list.Add(interpolationPosition);
         }
-        list.Add(targetPosition);
+        //list.Add(targetPositionBase);
         return list.ToArray();
     }
-    private Vector3[] AktualizujDaneKuli(ref Vector3 targetPosition)
+    private Vector3[] AktualizujDaneKuli()
     {
-        return HelperGenerujDaneKuli(ref targetPosition);
+        return HelperGenerujDaneKuli();
+    }
+    private Vector3 RandomizeVector(ref Vector3 vectorToChange)
+    {
+        float randomOffset = 1.5f;
+        vectorToChange.x = Random.Range(vectorToChange.x - randomOffset, vectorToChange.x + randomOffset);
+        vectorToChange.y = Random.Range(vectorToChange.y - randomOffset, vectorToChange.y + randomOffset);
+        vectorToChange.z = Random.Range(vectorToChange.z - randomOffset, vectorToChange.z + randomOffset);
+        return vectorToChange;
     }
     private void PrzypiszVisualObiectBase()
     {
@@ -84,6 +93,7 @@ public class WulkanicznaKulaScript : VisualBase
             if (ManagerEfectówScript.instance.dane.prefabKuli != null)
             {
                 go = GameObject.Instantiate(ManagerEfectówScript.instance.dane.prefabKuli, root, Quaternion.identity);
+                vob = go.GetComponent<KulaObjectBase>();
             }
             else
             {

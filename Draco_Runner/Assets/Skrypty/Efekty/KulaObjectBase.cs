@@ -1,11 +1,11 @@
 using UnityEngine;
-
 public class KulaObjectBase : VisualObjectBase
 {
     ///Pozycja końcowa, do której kula ma dotrzeć
     private Vector3 targetIdxPosition;
     ///Aktualna pozycja kuli
     private Vector3 actualMyPosition = Vector3.zero;
+    //public Vector3[] testList;
     void Update()
     {
         CheckInTarget();
@@ -22,7 +22,7 @@ public class KulaObjectBase : VisualObjectBase
     private void CheckInTarget()
     {
         float t = Vector3.Distance(this.transform.position, targetIdxPosition);
-        if(t < 0.25f)
+        if(t < 2.25f)
         {
             UstawIdxPos();
             this.transform.rotation = Quaternion.LookRotation(targetIdxPosition);
@@ -40,6 +40,7 @@ public class KulaObjectBase : VisualObjectBase
         actualMyPosition.z = posz;
         this.transform.position = actualMyPosition;
         this.transform.rotation = Quaternion.identity;
+        UstawIdxPos();
     }
     public override void ActivateMe()
     {

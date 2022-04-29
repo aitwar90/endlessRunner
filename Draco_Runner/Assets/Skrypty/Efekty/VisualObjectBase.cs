@@ -9,6 +9,7 @@ public abstract class VisualObjectBase : MonoBehaviour
     {
         set
         {
+            if(myElementRoot == null) myElementRoot = new ElementVisual();
             myElementRoot = value;
         }
     }

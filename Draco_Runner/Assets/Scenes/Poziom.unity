@@ -485,7 +485,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   posStart: {x: 6.5, y: 2, z: 60}
-  posPlayer: {x: 6.8, y: 3, z: 61}
+  posPlayer: {x: 25, y: 2, z: 83}
 --- !u!4 &1538060560
 Transform:
   m_ObjectHideFlags: 0
